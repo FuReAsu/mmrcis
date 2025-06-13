@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mmrcis.Data;
 
@@ -11,9 +12,11 @@ using mmrcis.Data;
 namespace mmrcis.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250612165318_PersonDataChanges")]
+    partial class PersonDataChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -580,6 +583,7 @@ namespace mmrcis.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("BloodGroup")
+                        .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
@@ -612,6 +616,7 @@ namespace mmrcis.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Sex")
+                        .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 

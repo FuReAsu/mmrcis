@@ -21,10 +21,10 @@ namespace mmrcis.Models // IMPORTANT: Ensure this matches your actual project na
         public string FullName { get; set; }
 
         [StringLength(255)]
-        public string Qualification { get; set; } // For staff (Doctor, Nurse, Operator)
+        public string? Qualification { get; set; } // For staff (Doctor, Nurse, Operator)
 
         [StringLength(255)]
-        public string Specialization { get; set; } // For Doctors
+        public string? Specialization { get; set; } // For Doctors
 
         [StringLength(255)]
         public string Address { get; set; }
@@ -35,13 +35,13 @@ namespace mmrcis.Models // IMPORTANT: Ensure this matches your actual project na
         public DateTime? DOB { get; set; } // Date of Birth
         public int? Age { get; set; }     // Age (can be calculated, or stored if needed)
         [StringLength(16)]
-        public string Sex { get; set; }
+        public string? Sex { get; set; }
         [StringLength(8)]
-        public string BloodGroup { get; set; }
+        public string? BloodGroup { get; set; }
         [StringLength(255)]
-        public string Allergy { get; set; } // Corrected typo from Alergy
+        public string? Allergy { get; set; } // Corrected typo from Alergy
         [StringLength(255)]
-        public string FatherName { get; set; }
+        public string? FatherName { get; set; }
 
         [StringLength(20)]
         public string? PhoneNumber { get; set; } // Added this nullable property based on a previous example

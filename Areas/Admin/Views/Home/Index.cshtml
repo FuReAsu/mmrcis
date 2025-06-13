@@ -1,0 +1,22 @@
+@* Areas/Admin/Views/Home/Index.cshtml *@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Welcome to the Admin Dashboard!</h1>
+
+<p>
+    From here, you can manage system settings, users, and master data.
+</p>
+
+<div class="card mt-4">
+    <div class="card-header">
+        Admin Actions
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a asp-area="Admin" asp-controller="Staff" asp-action="Index">Manage Staff Accounts</a></li>
+        <li class="list-group-item"><a asp-area="Admin" asp-controller="Services" asp-action="Index">Manage Services</a></li>
+        <li class="list-group-item"><a asp-area="Admin" asp-controller="CostRates" asp-action="Index">Manage Cost Rates</a></li>
+        @* Add more links as you build out other admin functionalities *@
+    </ul>
+</div>

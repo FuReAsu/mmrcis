@@ -59,6 +59,8 @@ app.UseRouting(); // Enables endpoint routing
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.MapRazorPages();
 // --- Configure Area Routes ---
 // Area routes should be defined BEFORE the default route, as they are more specific.
 // The order here determines precedence.

@@ -34,8 +34,8 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
 
             // --- 2. Seed an Admin User ---
             // Define the details for your initial admin user
-            string adminEmail = "admin@cisapp.com";
-            string adminPassword = "AdminPassword123!"; // **IMPORTANT: CHANGE THIS IN PRODUCTION!**
+            string adminEmail = "admin@test.local";
+            string adminPassword = "P@ssw0rd"; // **IMPORTANT: CHANGE THIS IN PRODUCTION!**
                                                        // Use a strong, unique password for production
                                                        // or use environment variables/user secrets.
             string adminRole = "Admin";
@@ -54,7 +54,9 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                     PersonType = "Admin", // Matches the PersonType for Admin roles
                     Address = "123 Admin Lane, CIS HQ",
                     Qualification = "Certified Administrator",
-                    RegisteredSince = DateTime.Now
+                    RegisteredSince = DateTime.Now,
+                    BloodGroup = "B",
+                    Sex = "male"
                 };
                 context.Persons.Add(adminPerson);
                 await context.SaveChangesAsync(); // Save Person to generate its ID before linking

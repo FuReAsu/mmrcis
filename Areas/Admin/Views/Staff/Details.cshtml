@@ -1,0 +1,37 @@
+@model mmrcis.Areas.Admin.Models.EditStaffViewModel
+@{
+    ViewData["Title"] = "Staff Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Staff Member</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FullName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.FullName)</dd>
+
+        <dt class="col-sm-3">Current Roles</dt>
+        <dd class="col-sm-9">@string.Join(", ", Model.CurrentRoles ?? new List<string>())</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Qualification)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Qualification)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Specialization)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Specialization)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Address)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Address)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+    </dl>
+</div>
+<div>
+    <a asp-area="Admin" asp-controller="Staff" asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-primary">Edit</a> |
+    <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
