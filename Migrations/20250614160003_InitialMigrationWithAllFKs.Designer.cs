@@ -12,8 +12,8 @@ using mmrcis.Data;
 namespace mmrcis.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    [Migration("20250612165318_PersonDataChanges")]
-    partial class PersonDataChanges
+    [Migration("20250614160003_InitialMigrationWithAllFKs")]
+    partial class InitialMigrationWithAllFKs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,6 +234,52 @@ namespace mmrcis.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("mmrcis.Models.Appointment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("AppointmentDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("BookedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DoctorStaffID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PatientID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("ServiceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("DoctorStaffID");
+
+                    b.HasIndex("PatientID");
+
+                    b.HasIndex("ServiceID");
+
+                    b.ToTable("Appointments");
+                });
+
             modelBuilder.Entity("mmrcis.Models.ClinicDocument", b =>
                 {
                     b.Property<int>("ID")
@@ -430,6 +476,79 @@ namespace mmrcis.Migrations
                     b.ToTable("IncomeBillItems");
                 });
 
+            modelBuilder.Entity("mmrcis.Models.InventoryItem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<decimal>("CurrentStock")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MinStockLevel")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("PurchasePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("RegisteredSince")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SupplierID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnitOfMeasure")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SupplierID");
+
+                    b.ToTable("InventoryItems");
+                });
+
+            modelBuilder.Entity("mmrcis.Models.Patient", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("PatientSince")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PersonID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PersonID")
+                        .IsUnique();
+
+                    b.ToTable("Patients");
+                });
+
             modelBuilder.Entity("mmrcis.Models.PatientCheckinOut", b =>
                 {
                     b.Property<int>("ID")
@@ -583,12 +702,15 @@ namespace mmrcis.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("BloodGroup")
-                        .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<DateTime?>("DOB")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FatherName")
                         .HasMaxLength(255)
@@ -616,7 +738,6 @@ namespace mmrcis.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Sex")
-                        .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
@@ -672,9 +793,11 @@ namespace mmrcis.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("RegisteredSince")
                         .HasColumnType("datetime2");
@@ -687,6 +810,46 @@ namespace mmrcis.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("mmrcis.Models.Supplier", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ContactPerson")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("RegisteredSince")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("mmrcis.Models.TicketFooter", b =>
@@ -826,6 +989,33 @@ namespace mmrcis.Migrations
                     b.Navigation("Person");
                 });
 
+            modelBuilder.Entity("mmrcis.Models.Appointment", b =>
+                {
+                    b.HasOne("mmrcis.Models.Person", "DoctorStaff")
+                        .WithMany()
+                        .HasForeignKey("DoctorStaffID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("mmrcis.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("mmrcis.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DoctorStaff");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("mmrcis.Models.ClinicDocument", b =>
                 {
                     b.HasOne("mmrcis.Models.PostingTransaction", "PostingTransaction")
@@ -910,6 +1100,26 @@ namespace mmrcis.Migrations
                     b.Navigation("CostRate");
 
                     b.Navigation("IncomeBill");
+                });
+
+            modelBuilder.Entity("mmrcis.Models.InventoryItem", b =>
+                {
+                    b.HasOne("mmrcis.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierID");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("mmrcis.Models.Patient", b =>
+                {
+                    b.HasOne("mmrcis.Models.Person", "Person")
+                        .WithOne()
+                        .HasForeignKey("mmrcis.Models.Patient", "PersonID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("mmrcis.Models.PatientCheckinOut", b =>

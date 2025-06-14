@@ -31,40 +31,62 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
         public DbSet<PatientCheckinOut> PatientCheckinOuts { get; set; }
         public DbSet<TicketHeader> TicketHeaders { get; set; }
         public DbSet<TicketFooter> TicketFooters { get; set; }
-
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<InventoryItem> InventoryItems { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // IMPORTANT: Call the base method first for Identity configurations
             base.OnModelCreating(modelBuilder);
 
             // --- Relationships and Constraints ---
 
-            // ApplicationUser to Person (One-to-One with Person as the principal, or One-to-Many from Person to ApplicationUser)
-            // Assuming one Person can be associated with AT MOST one ApplicationUser (as a system login account).
-            // A Person doesn't necessarily need a linked ApplicationUser (e.g., a patient who doesn't log in).
+            // Appointment to Patient (FK: PatientID)
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Patient)
+                .WithMany()
+                .HasForeignKey(a => a.PatientID)
+                .OnDelete(DeleteBehavior.NoAction); // Changed from Restrict
+
+            // Appointment to Doctor/Staff (Person) (FK: DoctorStaffID)
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.DoctorStaff)
+                .WithMany()
+                .HasForeignKey(a => a.DoctorStaffID)
+                .OnDelete(DeleteBehavior.NoAction); // Changed from Restrict
+
+            // Patient to Person (FK: PersonID in Patient)
+            modelBuilder.Entity<Patient>()
+                .HasOne(p => p.Person)
+                .WithOne() // Assuming a 1-to-1 relationship between Patient and Person
+                .HasForeignKey<Patient>(p => p.PersonID)
+                .OnDelete(DeleteBehavior.NoAction); // Changed from Restrict
+
+            // ApplicationUser to Person (FK: PersonID in ApplicationUser)
             modelBuilder.Entity<ApplicationUser>()
-                .HasOne(au => au.Person) // An ApplicationUser has one Person
-                .WithOne()               // This Person has one ApplicationUser (implicitly, as no specific navigation property on Person side for this)
-                .HasForeignKey<ApplicationUser>(au => au.PersonID) // FK is on ApplicationUser
-                .IsRequired(false)       // PersonID in ApplicationUser is nullable
-                .OnDelete(DeleteBehavior.SetNull); // If a Person record is deleted, set PersonID in ApplicationUser to null
+                .HasOne(au => au.Person)
+                .WithOne()
+                .HasForeignKey<ApplicationUser>(au => au.PersonID)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull); // SetNull is fine, doesn't cause cycle errors
 
             // --- Person Relationships (Person as various roles in transactions) ---
+            // All these were already NoAction, which is good.
 
             // Person as Patient in IncomeBill
             modelBuilder.Entity<Person>()
                 .HasMany(p => p.IncomeBillsAsPatient)
                 .WithOne(ib => ib.Patient)
                 .HasForeignKey(ib => ib.PatientID)
-                .OnDelete(DeleteBehavior.NoAction); // Prevent deleting a Person if they have associated income bills
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Person as Operator in IncomeBill
             modelBuilder.Entity<Person>()
                 .HasMany(p => p.IncomeBillsAsOperator) // Ensure this navigation property exists in Person.cs
                 .WithOne(ib => ib.Operator)
                 .HasForeignKey(ib => ib.OperatorID)
-                .OnDelete(DeleteBehavior.NoAction); // Prevent deleting an Operator if they've handled income bills
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Person as Patient in ExpenseBill
             modelBuilder.Entity<Person>()
@@ -140,7 +162,7 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 .WithMany(cr => cr.IncomeBillItems) // Ensure IncomeBillItems collection exists in CostRate
                 .HasPrincipalKey(cr => cr.CostCode) // The unique key on CostRate that is referenced
                 .HasForeignKey(ibi => ibi.CostCode)
-                .OnDelete(DeleteBehavior.NoAction); // Or .Cascade based on your specific business rule
+                .OnDelete(DeleteBehavior.NoAction);
 
             // ExpenseBillItem referencing CostRate.CostCode
             modelBuilder.Entity<ExpenseBillItem>()
@@ -157,21 +179,20 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 .HasPrincipalKey(cr => cr.AccountCode)
                 .HasForeignKey(pt => pt.AccountCode)
                 .IsRequired(false) // As AccountCode is nullable in PostingTransaction
-                .OnDelete(DeleteBehavior.NoAction); // Or .Cascade
+                .OnDelete(DeleteBehavior.NoAction);
 
             // --- Default Values (as per schema improvements) ---
             modelBuilder.Entity<IncomeBill>()
                 .Property(ib => ib.IsVoided)
-                .HasDefaultValue(false); // BIT DEFAULT 0
+                .HasDefaultValue(false);
 
             modelBuilder.Entity<ExpenseBill>()
                 .Property(eb => eb.IsVoided)
-                .HasDefaultValue(false); // BIT DEFAULT 0
+                .HasDefaultValue(false);
 
             modelBuilder.Entity<PatientCheckinOut>()
                 .Property(pco => pco.IsBilled)
-                .HasDefaultValue(false); // BIT DEFAULT 0
-
+                .HasDefaultValue(false);
 
             // --- Other Specific Configurations ---
 
@@ -180,18 +201,8 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 .HasOne(cd => cd.PostingTransaction)
                 .WithMany(pt => pt.ClinicDocuments)
                 .HasForeignKey(cd => cd.TransactionID)
-                .IsRequired(false) // TransactionID is nullable
-                .OnDelete(DeleteBehavior.NoAction); // Assuming you don't delete documents when transaction is deleted
-
-
-            // For tables without a Primary Key in your SQL schema (TicketHeader, TicketFooter)
-            // If you added an 'ID' property to the model, EF Core will treat it as PK by convention.
-            // If they truly have no PK and are just simple data containers, you would use:
-            // modelBuilder.Entity<TicketHeader>().HasNoKey();
-            // modelBuilder.Entity<TicketFooter>().HasNoKey();
-            // However, your C# models for these now include an 'ID' so this is not needed.
-            // EF Core will create an ID column for these tables as auto-incrementing PKs.
-
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

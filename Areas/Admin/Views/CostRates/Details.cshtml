@@ -1,0 +1,54 @@
+@model mmrcis.Models.CostRate
+
+@{
+    ViewData["Title"] = "Cost Rate Details";
+}
+
+<h1>Cost Rate Details</h1>
+
+<div>
+    <h4>Cost Rate</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CostCode)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CostCode)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CostAmount)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CostAmount)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CostType)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CostType)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IorE)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IorE)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.AccountCode)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.AccountCode)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.RegisteredSince)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.RegisteredSince)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-info">Edit</a> |
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

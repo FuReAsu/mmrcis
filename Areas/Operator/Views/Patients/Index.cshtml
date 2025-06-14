@@ -1,0 +1,67 @@
+@* Areas/Operator/Views/Patients/Index.cshtml *@
+@model IEnumerable<mmrcis.Models.Patient>
+
+@{
+    ViewData["Title"] = "Manage Patients";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Using the main shared layout
+}
+
+<h1>Manage Patients</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Patient</a>
+</p>
+
+<table class="table table-striped table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Person.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Person.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Person.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientSince)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PatientSince)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-secondary">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

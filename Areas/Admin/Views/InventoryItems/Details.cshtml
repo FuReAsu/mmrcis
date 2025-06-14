@@ -1,0 +1,72 @@
+@model mmrcis.Models.InventoryItem
+
+@{
+    ViewData["Title"] = "Inventory Item Details";
+}
+
+<h1>Inventory Item Details</h1>
+
+<div>
+    <h4>Inventory Item</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UnitOfMeasure)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UnitOfMeasure)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CurrentStock)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CurrentStock)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.MinStockLevel)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.MinStockLevel)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PurchasePrice)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.PurchasePrice)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Supplier)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Supplier!.Name)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.RegisteredSince)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.RegisteredSince)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-info">Edit</a> |
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

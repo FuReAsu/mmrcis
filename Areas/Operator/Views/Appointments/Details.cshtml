@@ -1,0 +1,67 @@
+@* Areas/Operator/Views/Appointments/Details.cshtml *@
+@model mmrcis.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Appointment Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Patient)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Patient.Person.FullName) (ID: @Model.Patient.ID)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DoctorStaff)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DoctorStaff.FullName) (@Html.DisplayFor(model => model.DoctorStaff.PersonType))
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Service)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Service.ServiceName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.AppointmentDateTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.AppointmentDateTime)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.BookedAt)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.BookedAt)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.LastUpdated)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LastUpdated)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-area="OperatorPortal" asp-controller="Appointments" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a> |
+    <a asp-area="OperatorPortal" asp-controller="Appointments" asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

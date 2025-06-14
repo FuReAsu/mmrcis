@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace mmrcis.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCisSchema : Migration
+    public partial class InitialMigrationWithAllFKs : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,17 +53,18 @@ namespace mmrcis.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonType = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Qualification = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Specialization = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Qualification = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Specialization = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     RegisteredSince = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Age = table.Column<int>(type: "int", nullable: true),
-                    Sex = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    BloodGroup = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    Allergy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FatherName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    Sex = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
+                    BloodGroup = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
+                    Allergy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    FatherName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,12 +78,32 @@ namespace mmrcis.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ServiceName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     RegisteredSince = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Services", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ContactPerson = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    RegisteredSince = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,6 +272,26 @@ namespace mmrcis.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PersonID = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PatientSince = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Patients_Persons_PersonID",
+                        column: x => x.PersonID,
+                        principalTable: "Persons",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PatientVitals",
                 columns: table => new
                 {
@@ -303,6 +344,32 @@ namespace mmrcis.Migrations
                         name: "FK_PostingTransactions_Persons_OperatorID",
                         column: x => x.OperatorID,
                         principalTable: "Persons",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InventoryItems",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UnitOfMeasure = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CurrentStock = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MinStockLevel = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PurchasePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    SupplierID = table.Column<int>(type: "int", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    RegisteredSince = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventoryItems", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_InventoryItems_Suppliers_SupplierID",
+                        column: x => x.SupplierID,
+                        principalTable: "Suppliers",
                         principalColumn: "ID");
                 });
 
@@ -471,6 +538,42 @@ namespace mmrcis.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientID = table.Column<int>(type: "int", nullable: false),
+                    DoctorStaffID = table.Column<int>(type: "int", nullable: false),
+                    ServiceID = table.Column<int>(type: "int", nullable: false),
+                    AppointmentDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    BookedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Patients_PatientID",
+                        column: x => x.PatientID,
+                        principalTable: "Patients",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Appointments_Persons_DoctorStaffID",
+                        column: x => x.DoctorStaffID,
+                        principalTable: "Persons",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Appointments_Services_ServiceID",
+                        column: x => x.ServiceID,
+                        principalTable: "Services",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PatientCheckinOuts",
                 columns: table => new
                 {
@@ -523,6 +626,21 @@ namespace mmrcis.Migrations
                         principalTable: "PostingTransactions",
                         principalColumn: "ID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_DoctorStaffID",
+                table: "Appointments",
+                column: "DoctorStaffID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PatientID",
+                table: "Appointments",
+                column: "PatientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_ServiceID",
+                table: "Appointments",
+                column: "ServiceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -629,6 +747,11 @@ namespace mmrcis.Migrations
                 column: "PatientID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InventoryItems_SupplierID",
+                table: "InventoryItems",
+                column: "SupplierID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PatientCheckinOuts_DoctorID",
                 table: "PatientCheckinOuts",
                 column: "DoctorID");
@@ -659,6 +782,12 @@ namespace mmrcis.Migrations
                 column: "IncomeBillID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Patients_PersonID",
+                table: "Patients",
+                column: "PersonID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PatientVitals_OperatorID",
                 table: "PatientVitals",
                 column: "OperatorID");
@@ -682,6 +811,9 @@ namespace mmrcis.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -707,6 +839,9 @@ namespace mmrcis.Migrations
                 name: "IncomeBillItems");
 
             migrationBuilder.DropTable(
+                name: "InventoryItems");
+
+            migrationBuilder.DropTable(
                 name: "PatientCheckinOuts");
 
             migrationBuilder.DropTable(
@@ -716,13 +851,16 @@ namespace mmrcis.Migrations
                 name: "PatientLabRecords");
 
             migrationBuilder.DropTable(
-                name: "Services");
-
-            migrationBuilder.DropTable(
                 name: "TicketFooters");
 
             migrationBuilder.DropTable(
                 name: "TicketHeaders");
+
+            migrationBuilder.DropTable(
+                name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "Services");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -735,6 +873,9 @@ namespace mmrcis.Migrations
 
             migrationBuilder.DropTable(
                 name: "ExpenseBills");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
 
             migrationBuilder.DropTable(
                 name: "PatientVitals");

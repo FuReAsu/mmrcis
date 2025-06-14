@@ -1,0 +1,64 @@
+@* Areas/Operator/Views/Appointments/Delete.cshtml *@
+@model mmrcis.Models.Appointment
+
+@{
+    ViewData["Title"] = "Delete Appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete Appointment</h1>
+
+<h3>Are you sure you want to delete this appointment?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Patient)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Patient.Person.FullName) (ID: @Model.Patient.ID)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DoctorStaff)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DoctorStaff.FullName) (@Html.DisplayFor(model => model.DoctorStaff.PersonType))
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Service)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Service.ServiceName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.AppointmentDateTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.AppointmentDateTime)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.BookedAt)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.BookedAt)
+        </dd>
+    </dl>
+
+    <form asp-area="Operator" asp-controller="Appointments" asp-action="Delete" method="post">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-area="Operator" asp-controller="Appointments" asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>

@@ -32,6 +32,9 @@ namespace mmrcis.Models // IMPORTANT: Ensure this matches your actual project na
         public DateTime RegisteredSince { get; set; } = DateTime.Now; // Default value set in model
 
         // --- Patient-specific fields ---
+        [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DOB { get; set; } // Date of Birth
         public int? Age { get; set; }     // Age (can be calculated, or stored if needed)
         [StringLength(16)]
@@ -45,6 +48,10 @@ namespace mmrcis.Models // IMPORTANT: Ensure this matches your actual project na
 
         [StringLength(20)]
         public string? PhoneNumber { get; set; } // Added this nullable property based on a previous example
+        [StringLength(100)]
+        [Display(Name = "Email Address")]
+        [EmailAddress]
+        public string? Email { get; set; }
 
         // --- Navigation properties for relationships where Person plays various roles ---
         // These are the ICollection properties that were missing and causing the errors.

@@ -1,0 +1,37 @@
+@* Areas/Operator/Views/Home/Index.cshtml *@
+@{
+    ViewData["Title"] = "Operator Portal"; // Sets the browser tab title
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Ensures it uses your main shared layout
+}
+
+<h1>Welcome to the Operator Portal</h1>
+<p>From here you can manage various aspects of the clinic operations. Click the buttons below to go to the desired operations page.</p>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Patient Management
+            </div>
+            <div class="card-body">
+                <p>Manage patient records, create new patients, and update existing ones.</p>
+                <a asp-area="Operator" asp-controller="Patients" asp-action="Index" class="btn btn-primary">Go to Patient Records</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Appointment Scheduling
+                </div>
+                <div class="card-body">
+                    <p>Schedule and manage patient appointments with doctors and other staff.</p>
+                    <a asp-area="Operator" asp-controller="Appointments" asp-action="Index" class="btn btn-primary">Manage Appointments</a>
+                </div>
+            </div>
+        </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

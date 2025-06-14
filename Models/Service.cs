@@ -13,9 +13,10 @@ namespace mmrcis.Models // Use your actual project namespace here
         [StringLength(128)]
         public string ServiceName { get; set; }
 
-        // Add any other relevant service details, e.g., description, default cost
         [StringLength(255)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
+        [Display(Name = "Is Active")]
+        public bool IsActive { get; set; } = true;
 
         public DateTime RegisteredSince { get; set; } = DateTime.Now;
     }
