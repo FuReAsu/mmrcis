@@ -36,7 +36,7 @@ namespace mmrcis.Areas.Operator.Controllers
 
             // Populate Doctor/Staff dropdown (assuming Persons are categorized by PersonType)
             var doctorStaff = await _context.Persons
-                                            .Where(p => p.PersonType == "Doctor" || p.PersonType == "Nurse") // Filter for specific staff types
+                                            .Where(p => p.PersonType == "Doctor" ) 
                                             .OrderBy(p => p.FullName)
                                             .Select(p => new { p.ID, FullName = $"{p.FullName} ({p.PersonType})" })
                                             .ToListAsync();
