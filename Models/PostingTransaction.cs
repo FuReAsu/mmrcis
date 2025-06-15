@@ -1,10 +1,10 @@
-// Models/PostingTransaction.cs
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
+namespace mmrcis.Models 
 {
     public class PostingTransaction
     {
@@ -12,22 +12,22 @@ namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public DateTime PDate { get; set; } = DateTime.Now; // PDATE in SQL
+        public DateTime PDate { get; set; } = DateTime.Now; 
 
-        public int? AccountCode { get; set; } // Nullable, references CostRate.AccountCode
-        [ForeignKey("AccountCode")] // Requires configuration in DbContext.OnModelCreating
-        public CostRate? CostRate { get; set; } // Navigation property
+        public int? AccountCode { get; set; } 
+        [ForeignKey("AccountCode")] 
+        public CostRate? CostRate { get; set; } 
 
         [Column(TypeName = "decimal(10,2)")]
         public decimal Total { get; set; }
 
-        public int? OperatorID { get; set; } // Nullable based on your script
+        public int? OperatorID { get; set; } 
         [ForeignKey("OperatorID")]
-        public Person? Operator { get; set; } // Navigation property to Person (as Operator)
+        public Person? Operator { get; set; } 
 
-        public int? CheckedPersonID { get; set; } // Nullable based on your script
+        public int? CheckedPersonID { get; set; } 
         [ForeignKey("CheckedPersonID")]
-        public Person? CheckedPerson { get; set; } // Navigation property to Person
+        public Person? CheckedPerson { get; set; } 
 
         public ICollection<ClinicDocument>? ClinicDocuments { get; set; }
     }

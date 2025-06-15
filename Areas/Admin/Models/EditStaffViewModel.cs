@@ -1,4 +1,4 @@
-// Areas/Admin/Models/EditStaffViewModel.cs
+
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
@@ -7,16 +7,16 @@ namespace mmrcis.Areas.Admin.Models
 {
     public class EditStaffViewModel
     {
-        // ApplicationUser fields (for ID and Email, Password change handled separately if complex)
+        
         [Required]
-        public string UserId { get; set; } // The Identity user ID
+        public string UserId { get; set; } 
 
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        // Password change fields (optional, only if changing password)
+        
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
         public string? NewPassword { get; set; }
@@ -26,9 +26,9 @@ namespace mmrcis.Areas.Admin.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string? ConfirmNewPassword { get; set; }
 
-        // Person fields
+        
         [Required]
-        public int PersonId { get; set; } // The associated Person ID
+        public int PersonId { get; set; } 
 
         [Required]
         [Display(Name = "Full Name")]
@@ -37,7 +37,7 @@ namespace mmrcis.Areas.Admin.Models
 
         [Required]
         [Display(Name = "Role")]
-        public string SelectedRole { get; set; } // To select from a list of roles
+        public string SelectedRole { get; set; } 
 
         [Display(Name = "Qualification")]
         [StringLength(255)]
@@ -55,10 +55,10 @@ namespace mmrcis.Areas.Admin.Models
         [StringLength(20)]
         public string? PhoneNumber { get; set; }
 
-        // Property to hold available roles for the dropdown
+        
         public List<string>? AvailableRoles { get; set; }
 
-        // To display current roles for user if needed
+        
         public IList<string>? CurrentRoles { get; set; }
     }
 }

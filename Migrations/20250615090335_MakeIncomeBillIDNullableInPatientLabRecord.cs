@@ -4,10 +4,10 @@
 
 namespace mmrcis.Migrations
 {
-    /// <inheritdoc />
+    
     public partial class MakeIncomeBillIDNullableInPatientLabRecord : Migration
     {
-        /// <inheritdoc />
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
@@ -19,7 +19,7 @@ namespace mmrcis.Migrations
                 oldType: "int");
         }
 
-        /// <inheritdoc />
+        
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(

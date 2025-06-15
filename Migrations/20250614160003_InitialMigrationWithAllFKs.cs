@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace mmrcis.Migrations
 {
-    /// <inheritdoc />
+    
     public partial class InitialMigrationWithAllFKs : Migration
     {
-        /// <inheritdoc />
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -808,7 +808,7 @@ namespace mmrcis.Migrations
                 column: "OperatorID");
         }
 
-        /// <inheritdoc />
+        
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

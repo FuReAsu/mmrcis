@@ -1,4 +1,4 @@
-// Models/PatientDocument.cs
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,9 +12,9 @@ namespace mmrcis.Models
 
         public int PatientID { get; set; }
         [ForeignKey("PatientID")]
-        public Patient Patient { get; set; } = null!; // Navigation property to Patient
+        public Patient Patient { get; set; } = null!; 
 
         [Column(TypeName = "varbinary(max)")]
-        public byte[] DocumentContent { get; set; } = null!; // Added default to avoid null warnings
+        public byte[] DocumentContent { get; set; } = null!; 
     }
 }

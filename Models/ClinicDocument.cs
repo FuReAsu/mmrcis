@@ -1,8 +1,8 @@
-// Models/ClinicDocument.cs
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
+namespace mmrcis.Models 
 {
     public class ClinicDocument
     {
@@ -10,11 +10,11 @@ namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public int? TransactionID { get; set; } // Nullable based on your script
+        public int? TransactionID { get; set; } 
         [ForeignKey("TransactionID")]
-        public PostingTransaction? PostingTransaction { get; set; } // Navigation property
+        public PostingTransaction? PostingTransaction { get; set; } 
 
         [Column(TypeName = "varbinary(max)")]
-        public byte[] DocumentContent { get; set; } // VARBINARY(MAX) maps to byte[]
+        public byte[] DocumentContent { get; set; } 
     }
 }

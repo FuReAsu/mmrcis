@@ -1,8 +1,8 @@
-// Models/Service.cs
+
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace mmrcis.Models // Use your actual project namespace here
+namespace mmrcis.Models 
 {
     public class Service
     {

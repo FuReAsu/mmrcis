@@ -1,11 +1,11 @@
-// Areas/Admin/Models/RegisterStaffViewModel.cs
+
 using System.ComponentModel.DataAnnotations;
 
 namespace mmrcis.Areas.Admin.Models
 {
     public class RegisterStaffViewModel
     {
-        // ApplicationUser fields
+        
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -22,7 +22,7 @@ namespace mmrcis.Areas.Admin.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        // Person fields
+        
         [Required]
         [Display(Name = "Full Name")]
         [StringLength(255)]
@@ -30,7 +30,7 @@ namespace mmrcis.Areas.Admin.Models
 
         [Required]
         [Display(Name = "Role")]
-        public string SelectedRole { get; set; } // To select from a list of roles
+        public string SelectedRole { get; set; } 
 
         [Display(Name = "Qualification")]
         [StringLength(255)]
@@ -47,7 +47,7 @@ namespace mmrcis.Areas.Admin.Models
         [Display(Name = "Phone Number")]
         [StringLength(20)]
         public string? PhoneNumber { get; set; }
-        // Property to hold available roles for the dropdown
+        
         public List<string>? AvailableRoles { get; set; }
     }
 }

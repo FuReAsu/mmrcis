@@ -1,4 +1,4 @@
-// Areas/Admin/Controllers/SuppliersController.cs
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using mmrcis.Data;
 using mmrcis.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic; // For List
+using System.Collections.Generic; 
 
 namespace mmrcis.Areas.Admin.Controllers
 {
@@ -22,13 +22,13 @@ namespace mmrcis.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Suppliers
+        
         public async Task<IActionResult> Index()
         {
             return View(await _context.Suppliers.OrderBy(s => s.Name).ToListAsync());
         }
 
-        // GET: Admin/Suppliers/Details/5
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,13 +46,13 @@ namespace mmrcis.Areas.Admin.Controllers
             return View(supplier);
         }
 
-        // GET: Admin/Suppliers/Create
+        
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Suppliers/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,ContactPerson,Phone,Email,Address,IsActive")] Supplier supplier)
@@ -68,7 +68,7 @@ namespace mmrcis.Areas.Admin.Controllers
             return View(supplier);
         }
 
-        // GET: Admin/Suppliers/Edit/5
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,7 +84,7 @@ namespace mmrcis.Areas.Admin.Controllers
             return View(supplier);
         }
 
-        // POST: Admin/Suppliers/Edit/5
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Name,ContactPerson,Phone,Email,Address,IsActive,RegisteredSince")] Supplier supplier)
@@ -118,7 +118,7 @@ namespace mmrcis.Areas.Admin.Controllers
             return View(supplier);
         }
 
-        // GET: Admin/Suppliers/Delete/5
+        
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,7 +136,7 @@ namespace mmrcis.Areas.Admin.Controllers
             return View(supplier);
         }
 
-        // POST: Admin/Suppliers/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

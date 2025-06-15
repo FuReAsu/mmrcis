@@ -4,10 +4,10 @@
 
 namespace mmrcis.Migrations
 {
-    /// <inheritdoc />
+    
     public partial class AddedOperatorToPatientLabRecord : Migration
     {
-        /// <inheritdoc />
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -29,7 +29,7 @@ namespace mmrcis.Migrations
                 principalColumn: "ID");
         }
 
-        /// <inheritdoc />
+        
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(

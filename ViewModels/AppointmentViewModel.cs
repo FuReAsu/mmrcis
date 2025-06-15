@@ -1,7 +1,7 @@
-// ViewModels/AppointmentViewModel.cs
+
 using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering; // For SelectListItem
+using Microsoft.AspNetCore.Mvc.Rendering; 
 
 namespace mmrcis.ViewModels
 {
@@ -39,7 +39,7 @@ namespace mmrcis.ViewModels
         [Display(Name = "Remarks")]
         public string? Remarks { get; set; }
 
-        // KEEP these for populating dropdown lists in the view
+        
         public IEnumerable<SelectListItem>? Patients { get; set; }
         public IEnumerable<SelectListItem>? DoctorStaffMembers { get; set; }
         public IEnumerable<SelectListItem>? Services { get; set; }

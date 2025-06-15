@@ -1,9 +1,9 @@
-// Models/Appointment.cs
+
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace mmrcis.Models // Ensure your actual project namespace
+namespace mmrcis.Models 
 {
     public class Appointment
     {
@@ -11,26 +11,26 @@ namespace mmrcis.Models // Ensure your actual project namespace
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        // Foreign Key to Patient
+        
         [Required]
         [Display(Name = "Patient")]
         public int PatientID { get; set; }
         [ForeignKey("PatientID")]
-        public Patient Patient { get; set; } = null!; // Required navigation property
+        public Patient Patient { get; set; } = null!; 
 
-        // Foreign Key to Person (for the Doctor/Nurse scheduling the appointment with)
+        
         [Required]
         [Display(Name = "Doctor / Staff")]
-        public int DoctorStaffID { get; set; } // Renamed from MedicalStaffID for clarity
+        public int DoctorStaffID { get; set; } 
         [ForeignKey("DoctorStaffID")]
-        public Person DoctorStaff { get; set; } = null!; // Required navigation property
+        public Person DoctorStaff { get; set; } = null!; 
 
-        // Foreign Key to Service
+        
         [Required]
         [Display(Name = "Service")]
         public int ServiceID { get; set; }
         [ForeignKey("ServiceID")]
-        public Service Service { get; set; } = null!; // Required navigation property
+        public Service Service { get; set; } = null!; 
         
         [Required]
         [Display(Name = "Appointment Date & Time")]
@@ -38,8 +38,8 @@ namespace mmrcis.Models // Ensure your actual project namespace
         public DateTime AppointmentDateTime { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Status")] // e.g., Scheduled, Confirmed, Completed, Cancelled, Missed
-        public string Status { get; set; } = "Scheduled"; // Default status
+        [Display(Name = "Status")] 
+        public string Status { get; set; } = "Scheduled"; 
 
         [StringLength(500)]
         [Display(Name = "Remarks")]

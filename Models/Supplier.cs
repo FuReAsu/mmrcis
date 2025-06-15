@@ -1,9 +1,9 @@
-// Models/Supplier.cs
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 
-namespace mmrcis.Models // Use your actual project namespace here
+namespace mmrcis.Models 
 {
     public class Supplier
     {
@@ -18,21 +18,21 @@ namespace mmrcis.Models // Use your actual project namespace here
 
         [StringLength(255)]
         [Display(Name = "Contact Person")]
-        public string? ContactPerson { get; set; } // Nullable
+        public string? ContactPerson { get; set; } 
 
         [StringLength(20)]
         [DataType(DataType.PhoneNumber)]
-        public string? Phone { get; set; } // Nullable
+        public string? Phone { get; set; } 
 
         [StringLength(100)]
         [DataType(DataType.EmailAddress)]
-        public string? Email { get; set; } // Nullable
+        public string? Email { get; set; } 
 
         [StringLength(255)]
-        public string? Address { get; set; } // Nullable
+        public string? Address { get; set; } 
 
         [Display(Name = "Is Active")]
-        public bool IsActive { get; set; } = true; // Default to active
+        public bool IsActive { get; set; } = true; 
 
         public DateTime RegisteredSince { get; set; } = DateTime.Now;
     }

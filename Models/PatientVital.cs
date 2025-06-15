@@ -1,8 +1,8 @@
-// Models/PatientVital.cs
+
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-// using System.Collections.Generic; // Not needed here, collection moved
+
 
 namespace mmrcis.Models
 {
@@ -13,32 +13,32 @@ namespace mmrcis.Models
         public int ID { get; set; }
 
         [Column(TypeName = "decimal(5,2)")]
-        public decimal? BP { get; set; } // Blood Pressure, nullable if not always recorded
+        public decimal? BP { get; set; } 
 
         [Column(TypeName = "decimal(5,2)")]
-        public decimal? Oximeter { get; set; } // Nullable
+        public decimal? Oximeter { get; set; } 
 
         [Column(TypeName = "decimal(5,2)")]
-        public decimal? Weight { get; set; } // Nullable
+        public decimal? Weight { get; set; } 
 
         [Column(TypeName = "decimal(5,2)")]
-        public decimal? RespRate { get; set; } // Respiratory Rate, nullable
+        public decimal? RespRate { get; set; } 
 
         [Column(TypeName = "decimal(5,2)")]
-        public decimal? Height { get; set; } // Nullable
+        public decimal? Height { get; set; } 
 
         public DateTime DateTime { get; set; } = DateTime.Now;
 
-        public int? OperatorID { get; set; } // Nullable based on your script
+        public int? OperatorID { get; set; } 
         [ForeignKey("OperatorID")]
-        public Person? Operator { get; set; } // Navigation property to Person (as Operator)
+        public Person? Operator { get; set; } 
 
-        // ADD THESE LINES: Link to the Patient model
+        
         public int PatientID { get; set; }
         [ForeignKey("PatientID")]
-        public Patient Patient { get; set; } = null!; // Navigation property to Patient
+        public Patient Patient { get; set; } = null!; 
 
-        // REMOVED: PatientCheckinOuts - This collection belongs on the Patient model, or PatientCheckinOut itself
-        // if PatientVital can have multiple checkouts (less likely).
+        
+        
     }
 }

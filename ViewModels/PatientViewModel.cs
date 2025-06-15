@@ -1,21 +1,21 @@
-// ViewModels/PatientViewModel.cs
+
 using System;
 using System.ComponentModel.DataAnnotations;
-using mmrcis.Models; // Ensure your models namespace is correct
+using mmrcis.Models; 
 
 namespace mmrcis.ViewModels
 {
     public class PatientViewModel
     {
-        // Patient specific properties
-        public int ID { get; set; } // Patient ID (will be 0 for new, existing for edit)
+        
+        public int ID { get; set; } 
 
         [Display(Name = "Patient Status")]
         [StringLength(50)]
-        public string Status { get; set; } = "Active"; // Default status
+        public string Status { get; set; } = "Active"; 
 
-        // Person properties (for creating/editing the associated Person record)
-        public int PersonID { get; set; } // Person ID (will be 0 for new, existing for edit)
+        
+        public int PersonID { get; set; } 
 
         [Required]
         [StringLength(100)]
@@ -38,7 +38,7 @@ namespace mmrcis.ViewModels
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime? DOB { get; set; } // Assuming Person has DOB, add if not
+        public DateTime? DOB { get; set; } 
 
         [StringLength(10)]
         [Display(Name = "Sex")]
@@ -48,8 +48,8 @@ namespace mmrcis.ViewModels
         [Display(Name = "Blood Group")]
         public string? BloodGroup { get; set; }
 
-        // Note: PersonType, Qualification, RegisteredSince are typically managed internally for Patients/Staff,
-        // not directly by the operator in a simple patient creation form.
-        // If you need them editable, add them here.
+        
+        
+        
     }
 }

@@ -1,12 +1,12 @@
-// Data/DbInitializer.cs
+
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore; // Needed for context.Database.MigrateAsync()
-using mmrcis.Models; // Ensure this matches your project's Models namespace
+using Microsoft.EntityFrameworkCore; 
+using mmrcis.Models; 
 using System.Linq;
 using System.Threading.Tasks;
-using System; // Needed for DateTime.Now
+using System; 
 
-namespace mmrcis.Data // Ensure this matches your project's Data namespace
+namespace mmrcis.Data 
 {
     public static class DbInitializer
     {
@@ -15,80 +15,80 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
-            // Ensure the database is created and all pending migrations are applied.
-            // This is crucial if you're running the app for the first time or after new migrations.
+            
+            
             await context.Database.MigrateAsync();
 
-            // --- 1. Seed Roles ---
-            // Define the roles required in your application
+            
+            
             string[] roleNames = { "Admin", "Doctor", "Nurse", "Operator" };
 
             foreach (var roleName in roleNames)
             {
-                // Check if the role already exists. If not, create it.
+                
                 if (!await roleManager.RoleExistsAsync(roleName))
                 {
                     await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
-            // --- 2. Seed an Admin User and associated Person ---
+            
             string adminEmail = "admin@test.local";
-            string adminPassword = "P@ssw0rd"; // **IMPORTANT: CHANGE THIS IN PRODUCTION!**
+            string adminPassword = "P@ssw0rd"; 
             string adminRole = "Admin";
 
-            // Try to find the admin user by email
+            
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
-            // If the admin user does not exist, create them
+            
             if (adminUser == null)
             {
-                // 1. Create a Person record for the Admin.
-                // This links the system login account to a real-world individual.
+                
+                
                 var adminPerson = new Person
                 {
                     FullName = "System Administrator",
-                    PersonType = "Admin", // Matches the PersonType for Admin roles
+                    PersonType = "Admin", 
                     Address = "123 Admin Lane, CIS HQ",
                     Qualification = "Certified Administrator",
                     RegisteredSince = DateTime.Now,
                     BloodGroup = "B",
-                    Sex = "Male", // Corrected typo: "male" -> "Male" for consistency
-                    PhoneNumber = "111-222-3333", // Added contact number for completeness
-                    Email = adminEmail // Associate email with the person record
+                    Sex = "Male", 
+                    PhoneNumber = "111-222-3333", 
+                    Email = adminEmail 
                 };
                 context.Persons.Add(adminPerson);
-                await context.SaveChangesAsync(); // <--- CRITICAL: Save Person to get its ID before linking!
+                await context.SaveChangesAsync(); 
 
-                // 2. Create the ApplicationUser (the actual login account)
+                
                 adminUser = new ApplicationUser
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
-                    EmailConfirmed = true, // Set to true to allow immediate login without email confirmation
-                    PersonID = adminPerson.ID // <--- CRITICAL: Link the ApplicationUser to the newly created Person ID
+                    EmailConfirmed = true, 
+                    PersonID = adminPerson.ID 
                 };
 
-                // 3. Create the user with the specified password
+                
                 var result = await userManager.CreateAsync(adminUser, adminPassword);
 
                 if (result.Succeeded)
                 {
-                    // 4. Assign the "Admin" role to the newly created user
+                    
                     await userManager.AddToRoleAsync(adminUser, adminRole);
                     Console.WriteLine($"Admin user '{adminEmail}' created and assigned '{adminRole}' role.");
                 }
                 else
                 {
-                    // Log any errors if user creation failed
+                    
                     Console.WriteLine($"Error creating admin user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-                    // Optional: If user creation fails, consider removing the person record if it was added.
-                    // Or ensure the process is robust enough to handle partial creations.
+                    
+                    
                 }
             }
             else
             {
-                // If admin user already exists, ensure they have the "Admin" role
+                
                 if (!await userManager.IsInRoleAsync(adminUser, adminRole))
                 {
                     await userManager.AddToRoleAsync(adminUser, adminRole);
@@ -99,8 +99,8 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                     Console.WriteLine($"Admin user '{adminEmail}' already exists and has '{adminRole}' role.");
                 }
 
-                // Optional: For existing users, ensure their PersonID is set if it's null
-                // This is useful for dev environments where you might add PersonId later.
+                
+                
                 if (adminUser.PersonID == null)
                 {
                     var existingPerson = await context.Persons.FirstOrDefaultAsync(p => p.Email == adminEmail && p.PersonType == "Admin");
@@ -113,7 +113,7 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 }
             }
 
-            // --- 3. Seed an Operator User and associated Person ---
+            
             string operatorEmail = "operator@test.local";
             string operatorPassword = "P@ssw0rd";
             string operatorRole = "Operator";
@@ -122,36 +122,36 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
 
             if (operatorUser == null)
             {
-                // 1. Create a Person record for the Operator
+                
                 var operatorPerson = new Person
                 {
                     FullName = "Clinic Operator",
-                    PersonType = "Operator", // Matches the PersonType for Operator roles
+                    PersonType = "Operator", 
                     Address = "456 Operator Street, Clinic Office",
                     Qualification = "Clinic Staff",
                     RegisteredSince = DateTime.Now,
                     BloodGroup = "A",
-                    Sex = "Female", // Corrected typo: "femaile" -> "Female"
-                    PhoneNumber = "444-555-6666", // Added contact number
-                    Email = operatorEmail // Associate email with the person record
+                    Sex = "Female", 
+                    PhoneNumber = "444-555-6666", 
+                    Email = operatorEmail 
                 };
                 context.Persons.Add(operatorPerson);
-                await context.SaveChangesAsync(); // <--- CRITICAL: Save Person to get its ID before linking!
+                await context.SaveChangesAsync(); 
 
-                // 2. Create the ApplicationUser for Operator
+                
                 operatorUser = new ApplicationUser
                 {
                     UserName = operatorEmail,
                     Email = operatorEmail,
                     EmailConfirmed = true,
-                    PersonID = operatorPerson.ID // <--- CRITICAL: Link ApplicationUser to the new Person ID
+                    PersonID = operatorPerson.ID 
                 };
 
-                // 3. Create the user with the specified password
+                
                 var result = await userManager.CreateAsync(operatorUser, operatorPassword);
                 if (result.Succeeded)
                 {
-                    // 4. Assign the "Operator" role
+                    
                     await userManager.AddToRoleAsync(operatorUser, operatorRole);
                     Console.WriteLine($"Operator user '{operatorEmail}' created and assigned '{operatorRole}' role.");
                 }
@@ -162,7 +162,7 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
             }
             else
             {
-                // If operator user already exists, ensure they have the "Operator" role
+                
                 if (!await userManager.IsInRoleAsync(operatorUser, operatorRole))
                 {
                     await userManager.AddToRoleAsync(operatorUser, operatorRole);
@@ -173,7 +173,7 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                     Console.WriteLine($"Operator user '{operatorEmail}' already exists and has '{operatorRole}' role.");
                 }
 
-                // Optional: For existing users, ensure their PersonID is set if it's null
+                
                 if (operatorUser.PersonID == null)
                 {
                     var existingPerson = await context.Persons.FirstOrDefaultAsync(p => p.Email == operatorEmail && p.PersonType == "Operator");
@@ -186,8 +186,8 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 }
             }
 
-            // --- 4. Seed other initial data (e.g., Services, CostRates, Suppliers, InventoryItems) ---
-            // Seed initial Services if none exist
+            
+            
             if (!context.Services.Any())
             {
                 context.Services.AddRange(
@@ -201,7 +201,7 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 Console.WriteLine("Initial Services seeded.");
             }
 
-            // Seed initial CostRates if none exist
+            
             if (!context.CostRates.Any())
             {
                 context.CostRates.AddRange(
@@ -214,7 +214,7 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 Console.WriteLine("Initial Cost Rates seeded.");
             }
             
-            // Seed initial Suppliers if none exist
+            
             if (!context.Suppliers.Any())
             {
                 context.Suppliers.AddRange(
@@ -226,7 +226,7 @@ namespace mmrcis.Data // Ensure this matches your project's Data namespace
                 Console.WriteLine("Initial Suppliers seeded.");
             }
 
-            // Seed initial Inventory Items if none exist (requires Suppliers to be seeded first)
+            
             if (!context.InventoryItems.Any() && context.Suppliers.Any())
             {
                 var globalPharma = await context.Suppliers.FirstAsync(s => s.Name == "Global Pharma Inc.");

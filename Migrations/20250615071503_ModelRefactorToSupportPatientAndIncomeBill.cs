@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace mmrcis.Migrations
 {
-    /// <inheritdoc />
+    
     public partial class ModelRefactorToSupportPatientAndIncomeBill : Migration
     {
-        /// <inheritdoc />
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
@@ -212,7 +212,7 @@ namespace mmrcis.Migrations
                 principalColumn: "ID");
         }
 
-        /// <inheritdoc />
+        
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
