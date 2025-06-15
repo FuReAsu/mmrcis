@@ -1,0 +1,88 @@
+@model IEnumerable<mmrcis.Models.PatientLabRecord>
+
+@{
+    ViewData["Title"] = "Patient Lab Records";
+    // Adjust layout path if needed, e.g., if you have a specific Operator layout
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Using the main shared layout
+}
+
+<h1>Patient Lab Records</h1>
+
+<p>
+    <a asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Create" class="btn btn-primary">Create New Lab Record</a>
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Operator</th>
+                <th>Income Bill ID</th>
+                <th>Collected?</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.DateTime)</td>
+                    <td>
+                        @if (item.Patient != null && item.Patient.Person != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.Patient.Person.FullName)
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Doctor != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.Doctor.FullName)
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Operator != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.Operator.FullName)
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IncomeBill != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.IncomeBill.ID)
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.IsCollected)</td>
+                    <td>
+                        <a asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No patient lab records found.</p>
+}

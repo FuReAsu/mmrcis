@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mmrcis.Data;
 
@@ -11,9 +12,11 @@ using mmrcis.Data;
 namespace mmrcis.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250615073102_AddedOperatorToPatientLabRecord")]
+    partial class AddedOperatorToPatientLabRecord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -625,7 +628,7 @@ namespace mmrcis.Migrations
                     b.Property<int>("DoctorID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IncomeBillID")
+                    b.Property<int>("IncomeBillID")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsCollected")
@@ -1218,7 +1221,8 @@ namespace mmrcis.Migrations
                     b.HasOne("mmrcis.Models.IncomeBill", "IncomeBill")
                         .WithMany("PatientLabRecords")
                         .HasForeignKey("IncomeBillID")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("mmrcis.Models.Person", "Operator")
                         .WithMany()

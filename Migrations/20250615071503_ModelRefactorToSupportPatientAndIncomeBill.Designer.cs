@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mmrcis.Data;
 
@@ -11,9 +12,11 @@ using mmrcis.Data;
 namespace mmrcis.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250615071503_ModelRefactorToSupportPatientAndIncomeBill")]
+    partial class ModelRefactorToSupportPatientAndIncomeBill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -625,14 +628,11 @@ namespace mmrcis.Migrations
                     b.Property<int>("DoctorID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IncomeBillID")
+                    b.Property<int>("IncomeBillID")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsCollected")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("OperatorID")
-                        .HasColumnType("int");
 
                     b.Property<int>("PatientID")
                         .HasColumnType("int");
@@ -642,8 +642,6 @@ namespace mmrcis.Migrations
                     b.HasIndex("DoctorID");
 
                     b.HasIndex("IncomeBillID");
-
-                    b.HasIndex("OperatorID");
 
                     b.HasIndex("PatientID");
 
@@ -1218,11 +1216,8 @@ namespace mmrcis.Migrations
                     b.HasOne("mmrcis.Models.IncomeBill", "IncomeBill")
                         .WithMany("PatientLabRecords")
                         .HasForeignKey("IncomeBillID")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("mmrcis.Models.Person", "Operator")
-                        .WithMany()
-                        .HasForeignKey("OperatorID");
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("mmrcis.Models.Patient", "Patient")
                         .WithMany("PatientLabRecords")
@@ -1233,8 +1228,6 @@ namespace mmrcis.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("IncomeBill");
-
-                    b.Navigation("Operator");
 
                     b.Navigation("Patient");
                 });

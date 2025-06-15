@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
+namespace mmrcis.Models
 {
     public class PatientDocument
     {
@@ -12,9 +12,9 @@ namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
 
         public int PatientID { get; set; }
         [ForeignKey("PatientID")]
-        public Person Patient { get; set; } // Navigation property to Person (as Patient)
+        public Patient Patient { get; set; } = null!; // Navigation property to Patient
 
         [Column(TypeName = "varbinary(max)")]
-        public byte[] DocumentContent { get; set; } // VARBINARY(MAX) maps to byte[]
+        public byte[] DocumentContent { get; set; } = null!; // Added default to avoid null warnings
     }
 }

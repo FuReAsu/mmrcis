@@ -1,0 +1,55 @@
+@model mmrcis.Models.PatientLabRecord
+
+@{
+    ViewData["Title"] = "Lab Record Details";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Or your main shared layout
+}
+
+<h1>Lab Record Details</h1>
+
+<div>
+    <h4>PatientLabRecord</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Patient?.Person?.FullName ?? "N/A")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Doctor)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Doctor?.FullName ?? "N/A")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Operator)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Operator?.FullName ?? "N/A")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IncomeBill)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.IncomeBill != null ? $"Bill {Model.IncomeBill.ID} (Patient: {Model.IncomeBill.Patient?.Person?.FullName ?? "N/A"})" : "No Bill Linked")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsCollected)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsCollected)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-secondary">Edit</a> |
+    <a asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Index">Back to List</a>
+</div>

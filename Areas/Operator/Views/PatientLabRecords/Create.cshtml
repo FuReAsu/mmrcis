@@ -1,0 +1,100 @@
+@model mmrcis.ViewModels.PatientLabRecordCreateEditViewModel
+
+@{
+    ViewData["Title"] = "Create Patient Lab Record";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Or your main shared layout
+}
+
+<h1>Create Patient Lab Record</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="PatientID" class="control-label"></label>
+                <select asp-for="PatientID" class="form-control" asp-items="ViewBag.PatientID"></select>
+                <span asp-validation-for="PatientID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DoctorID" class="control-label"></label>
+                <select asp-for="DoctorID" class="form-control" asp-items="ViewBag.DoctorID"></select>
+                <span asp-validation-for="DoctorID" class="text-danger"></span>
+            </div>
+
+            <hr />
+            <h4>Billing Information</h4>
+            <div class="form-group form-check">
+                <input class="form-check-input" asp-for="CreateNewIncomeBill" id="createNewBillCheckbox" />
+                <label class="form-check-label" asp-for="CreateNewIncomeBill"></label>
+            </div>
+
+            <div id="existingBillSection" style="@(Model.CreateNewIncomeBill ? "display:none;" : "")">
+                <div class="form-group">
+                    <label asp-for="SelectedIncomeBillID" class="control-label"></label>
+                    <select asp-for="SelectedIncomeBillID" class="form-control" asp-items="ViewBag.ExistingIncomeBills">
+                        <option value="">-- Select Existing Bill --</option>
+                    </select>
+                    <span asp-validation-for="SelectedIncomeBillID" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div id="newBillSection" style="@(Model.CreateNewIncomeBill ? "" : "display:none;")">
+                <p class="text-muted">A new basic Income Bill will be created and linked to this lab record.</p>
+                <div class="form-group">
+                    <label asp-for="NewIncomeBillTotalAmount" class="control-label"></label>
+                    <input asp-for="NewIncomeBillTotalAmount" class="form-control" />
+                    <span asp-validation-for="NewIncomeBillTotalAmount" class="text-danger"></span>
+                    <small class="form-text text-muted">You can add detailed items to this bill later.</small>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsCollected" /> @Html.DisplayNameFor(model => model.IsCollected)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-area="Operator" asp-controller="PatientLabRecords" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const createNewBillCheckbox = document.getElementById('createNewBillCheckbox');
+            const existingBillSection = document.getElementById('existingBillSection');
+            const newBillSection = document.getElementById('newBillSection');
+
+            function toggleBillSections() {
+                if (createNewBillCheckbox.checked) {
+                    existingBillSection.style.display = 'none';
+                    newBillSection.style.display = 'block';
+                    // Clear selected existing bill if creating new
+                    document.getElementById('SelectedIncomeBillID').value = '';
+                } else {
+                    existingBillSection.style.display = 'block';
+                    newBillSection.style.display = 'none';
+                }
+            }
+
+            createNewBillCheckbox.addEventListener('change', toggleBillSections);
+
+            // Initial toggle on page load
+            toggleBillSections();
+        });
+    </script>
+}

@@ -2,8 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+// using System.Collections.Generic; // Not needed here, collection moved
 
-namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
+namespace mmrcis.Models
 {
     public class PatientVital
     {
@@ -32,6 +33,12 @@ namespace mmrcis.Models // IMPORTANT: Replace with your actual project namespace
         [ForeignKey("OperatorID")]
         public Person? Operator { get; set; } // Navigation property to Person (as Operator)
 
-        public ICollection<PatientCheckinOut>? PatientCheckinOuts { get; set; }
+        // ADD THESE LINES: Link to the Patient model
+        public int PatientID { get; set; }
+        [ForeignKey("PatientID")]
+        public Patient Patient { get; set; } = null!; // Navigation property to Patient
+
+        // REMOVED: PatientCheckinOuts - This collection belongs on the Patient model, or PatientCheckinOut itself
+        // if PatientVital can have multiple checkouts (less likely).
     }
 }
