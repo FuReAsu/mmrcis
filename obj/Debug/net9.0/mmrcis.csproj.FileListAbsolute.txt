@@ -406,3 +406,4 @@
 /media/fureasu/DATA/MMR/WebProgramming/Assignment/mmrcis/obj/Debug/net9.0/mmrcis.pdb
 /media/fureasu/DATA/MMR/WebProgramming/Assignment/mmrcis/obj/Debug/net9.0/mmrcis.genruntimeconfig.cache
 /media/fureasu/DATA/MMR/WebProgramming/Assignment/mmrcis/obj/Debug/net9.0/ref/mmrcis.dll
+/media/fureasu/DATA/MMR/WebProgramming/Assignment/mmrcis/obj/Debug/net9.0/mmrcis.sourcelink.json

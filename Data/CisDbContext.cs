@@ -14,13 +14,15 @@ namespace mmrcis.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            
+            //Person Relationship with Patient
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.PatientProfile)
                 .WithOne(pat => pat.Person)
                 .HasForeignKey<Patient>(pat => pat.PersonID)
                 .OnDelete(DeleteBehavior.Cascade);
-                
+            
+            //Person Relationship with ApplicationUser  
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(au => au.Person)
                 .WithOne()
@@ -28,6 +30,11 @@ namespace mmrcis.Data
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            //Person Relationship with AuditLog
+            modelBuilder.Entity<Person>()
+                .HasMany(p => p.AuditLogEntries)
+                .WithOne(al => al.Person)
+                .HasForeignKey(al => al.PersonID);
 
         }
     }

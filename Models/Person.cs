@@ -45,9 +45,6 @@ namespace mmrcis.Models
         [StringLength(255)]
         public string? Allergy { get; set; }
 
-        [StringLength(255)]
-        public string? FatherName { get; set; }
-
         [StringLength(20)]
         public string? PhoneNumber { get; set; }
 
@@ -57,5 +54,7 @@ namespace mmrcis.Models
         public string? Email { get; set; } 
 
         public Patient? PatientProfile { get; set; }
+
+        public ICollection<AuditLog> AuditLogEntries { get; set; }
     }
 }
