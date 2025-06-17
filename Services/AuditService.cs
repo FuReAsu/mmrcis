@@ -24,6 +24,7 @@ namespace mmrcis.Services
                 UserName = userName,
                 Action = action,
                 ControllerName = controllerName,
+                Parameters = parameters,
                 Timestamp = DateTime.Now,
                 IpAddress = ipAddress,
                 UserAgent = userAgent

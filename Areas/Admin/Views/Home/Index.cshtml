@@ -7,3 +7,21 @@
 <p>
 	From here, you can perform administrative tasks. Click the buttons below to go to the desired administrative page.
 </p>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-4"> 
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">Manage Staff Accounts</h5>
+            </div>
+            <div class="card-body d-grid"> 
+                <p class="card-text">Create, view, edit, or delete staff user accounts and their associated profiles.</p>
+                <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="btn btn-primary mt-auto">Go to Staff Management</a> 
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

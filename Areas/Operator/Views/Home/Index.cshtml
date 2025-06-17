@@ -4,3 +4,21 @@
 
 <h1>Welcome to the Operator Portal</h1>
 <p>From here you can manage various aspects of the clinic operations. Click the buttons below to go to the desired operations page.</p>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Patient Management</h5>
+            </div>
+            <div class="card-body d-grid">
+                <p class="card-text">Manage patient records, create new patients, and update existing ones.</p>
+                <a asp-area="Operator" asp-controller="Patient" asp-action="Index" class="btn btn-sm btn-primary">Go to Patient Records</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
