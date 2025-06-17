@@ -10,6 +10,8 @@ namespace mmrcis.Data
             : base(options){}
         public DbSet<Person> Persons { get; set; }
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,7 +37,6 @@ namespace mmrcis.Data
                 .HasMany(p => p.AuditLogEntries)
                 .WithOne(al => al.Person)
                 .HasForeignKey(al => al.PersonID);
-
         }
     }
 }

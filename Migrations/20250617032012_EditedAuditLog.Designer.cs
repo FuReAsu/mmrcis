@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mmrcis.Data;
 
@@ -11,9 +12,11 @@ using mmrcis.Data;
 namespace mmrcis.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250617032012_EditedAuditLog")]
+    partial class EditedAuditLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +254,7 @@ namespace mmrcis.Migrations
                     b.Property<string>("Parameters")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonID")
+                    b.Property<int>("PersonID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
@@ -427,7 +430,9 @@ namespace mmrcis.Migrations
                 {
                     b.HasOne("mmrcis.Models.Person", "Person")
                         .WithMany("AuditLogEntries")
-                        .HasForeignKey("PersonID");
+                        .HasForeignKey("PersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
                 });

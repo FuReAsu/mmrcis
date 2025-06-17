@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using mmrcis.Models;
+using mmrcis.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace mmrcis.Areas.Identity.Pages.Account
 {
@@ -22,11 +24,15 @@ namespace mmrcis.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IAuditService _auditService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IAuditService auditService, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _auditService = auditService;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -116,6 +122,24 @@ namespace mmrcis.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    
+                    var currentUser = await _userManager.Users
+                                                        .Include(u => u.Person)
+                                                        .FirstOrDefaultAsync(u => u.Email == Input.Email);
+                    string currentUserName = currentUser.Person.FullName;
+                    string currentAction = "Login";
+                    string currentController = "Account";
+                    string currentParameters = "";
+                    string currentIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+                    string currentUserAgent = Request.Headers["User-Agent"].ToString();
+                    await _auditService.LogActionAsync(
+                            currentUserName,
+                            currentAction,
+                            currentController,
+                            currentParameters,
+                            currentIpAddress,
+                            currentUserAgent
+                            );
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

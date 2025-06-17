@@ -1,5 +1,6 @@
 using mmrcis.Data;
 using mmrcis.Models;
+using mmrcis.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,10 +27,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     builder.Services.AddAuthorization(options =>
     {
         options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-        options.AddPolicy("RequireMedicalRole", policy => policy.RequireRole("Doctor", "Nurse"));
-        options.AddPolicy("RequireOperatorRole", policy => policy.RequireRole("Operator"));
-        options.AddPolicy("RequireStaff", policy => policy.RequireRole("Admin", "Doctor", "Nurse", "Operator")); 
+        options.AddPolicy("RequireMedicalRole", policy => policy.RequireRole("Doctor", "Nurse", "Admin"));
+        options.AddPolicy("RequireOperatorRole", policy => policy.RequireRole("Operator", "Admin"));
     });
+
+builder.Services.AddScoped<IAuditService, AuditService>();
+
 
 var app = builder.Build();
 
