@@ -11,7 +11,9 @@ namespace mmrcis.Data
         public DbSet<Person> Persons { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
-
+        public DbSet<IncomeBill> IncomeBills { get; set; }
+        public DbSet<IncomeBillItem> IncomeBillItems { get; set; }
+        public DbSet<CostRate> CostRates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +39,34 @@ namespace mmrcis.Data
                 .HasMany(p => p.AuditLogEntries)
                 .WithOne(al => al.Person)
                 .HasForeignKey(al => al.PersonID);
+
+            //IncomeBill Relationship with PersonAsOperator
+            modelBuilder.Entity<IncomeBill>()
+                .HasOne(ib => ib.Person)
+                .WithMany(p => p.IncomeBillsAsCreatedByOperator)
+                .HasForeignKey(ib => ib.PersonID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //IncomeBill Relationship with Patient
+            modelBuilder.Entity<IncomeBill>()
+                .HasOne(ib => ib.Patient)
+                .WithMany(p => p.IncomeBills)
+                .HasForeignKey(ib => ib.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //IncomeBillItem Relationship with IncomeBill
+            modelBuilder.Entity<IncomeBillItem>()
+                .HasOne(ibi => ibi.IncomeBill)
+                .WithMany(ib => ib.IncomeBillItems)
+                .HasForeignKey(ibi => ibi.IncomeBillID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //IncomeBillItem Relationship with CostRate
+            modelBuilder.Entity<IncomeBillItem>()
+                .HasOne(ibi => ibi.CostRate)
+                .WithMany(cr => cr.IncomeBillItems)
+                .HasForeignKey(ibi => ibi.CostRateID)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

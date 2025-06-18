@@ -55,6 +55,8 @@ namespace mmrcis.Models
 
         public Patient? PatientProfile { get; set; }
 
-        public ICollection<AuditLog> AuditLogEntries { get; set; }
+        public ICollection<AuditLog> AuditLogEntries { get; set; } = new List<AuditLog>();
+
+        public ICollection<IncomeBill> IncomeBillsAsCreatedByOperator { get; set; } = new List<IncomeBill>();
     }
 }

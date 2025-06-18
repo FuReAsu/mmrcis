@@ -20,5 +20,7 @@ namespace mmrcis.Models
         public string Status { get; set; } = "Active";
 
         public DateTime PatientSince { get; set; }
+
+        public ICollection<IncomeBill> IncomeBills { get; set; } = new List<IncomeBill>();
     }
 }
