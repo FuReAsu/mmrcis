@@ -1,0 +1,61 @@
+@model IEnumerable<mmrcis.Models.CostRate>
+
+@{
+		ViewData["Title"] = "Manage CostRates";
+		Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>
+	<a asp-area="Admin" asp-controller="CostRate" asp-action="Create" class="btn btn-sm btn-primary">Create New CostRate</a>
+</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<table class="table table-striped table-bordered mt3">
+		<thead>
+				<tr>
+					<th>@Html.DisplayNameFor(model => model.CostType)</th>
+					<th>@Html.DisplayNameFor(model => model.UnitCost)</th>
+					<th>@Html.DisplayNameFor(model => model.Description)</th>
+					<th>@Html.DisplayNameFor(model => model.IsActive)</th>
+					<th>@Html.DisplayNameFor(model => model.RegisteredSince)</th>
+					<th>Actions</th>
+				</tr>
+		</thead>
+		<tbody>
+				@foreach (var item in Model)
+				{
+						<tr>
+								<td>@Html.DisplayFor(modelItem => item.CostType)</td>
+								<td>@Html.DisplayFor(modelItem => item.UnitCost)</td>
+								<td>@Html.DisplayFor(modelItem => item.Description)</td>
+								<td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+								<td>@Html.DisplayFor(modelItem => item.RegisteredSince)</td>
+								<td>
+										<a asp-area="Admin" asp-controller="CostRate" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit</a> |
+										<a asp-area="Admin" asp-controller="CostRate" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-secondary">Details</a> |
+										<a asp-area="Admin" asp-controller="CostRate" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
+								</td>
+						</tr>
+				}
+		</tbody>
+</table>
+
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

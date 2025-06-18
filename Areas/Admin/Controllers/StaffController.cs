@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using mmrcis.Areas.Admin.Models;
 using mmrcis.Data;
 using mmrcis.Models;
 using mmrcis.Services;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks; 
 
 namespace mmrcis.Areas.Admin.Controllers
 {

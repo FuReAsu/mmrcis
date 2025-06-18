@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
@@ -253,7 +252,7 @@ namespace mmrcis.Areas.Operator.Controllers
                 TempData["SuccessMessage"] = $"Patient '{patient.Person?.FullName}' deleted successfully!";
                 _logger.LogInformation($"Operator deleted Patient: {patient.Person?.FullName}");
 
-                string logParameters = $"Delted Patient = {patient.Person?.FullName}";
+                string logParameters = $"Deleted Patient = {patient.Person?.FullName}";
                 await GenerateAuditLog("Delete", logParameters);
             }
             

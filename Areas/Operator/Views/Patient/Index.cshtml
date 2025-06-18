@@ -40,11 +40,11 @@
 				@foreach (var item in Model)
 				{
 						<tr>
-								<td>@Html.DisplayNameFor(modelItem => item.Person.FullName)</td>
-								<td>@Html.DisplayNameFor(modelItem => item.Person.PhoneNumber)</td>
-								<td>@Html.DisplayNameFor(modelItem => item.Person.Email)</td>
-								<td>@Html.DisplayNameFor(modelItem => item.Status)</td>
-								<td>@Html.DisplayNameFor(modelItem => item.PatientSince)</td>
+								<td>@Html.DisplayFor(modelItem => item.Person.FullName)</td>
+								<td>@Html.DisplayFor(modelItem => item.Person.PhoneNumber)</td>
+								<td>@Html.DisplayFor(modelItem => item.Person.Email)</td>
+								<td>@Html.DisplayFor(modelItem => item.Status)</td>
+								<td>@Html.DisplayFor(modelItem => item.PatientSince)</td>
 								<td>
 										<a asp-area="Operator" asp-controller="Patient" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit</a> |
 										<a asp-area="Operator" asp-controller="Patient" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-secondary">Details</a> |

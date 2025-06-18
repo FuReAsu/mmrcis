@@ -58,5 +58,7 @@ namespace mmrcis.Models
         public ICollection<AuditLog> AuditLogEntries { get; set; } = new List<AuditLog>();
 
         public ICollection<IncomeBill> IncomeBillsAsCreatedByOperator { get; set; } = new List<IncomeBill>();
+
+        public ICollection<Appointment> AppointmentsAsAssignedToDoctor { get; set; } = new List<Appointment>();
     }
 }

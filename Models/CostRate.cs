@@ -25,6 +25,9 @@ namespace mmrcis.Models
        
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; } = true;
+
+        [Display(Name = "Registered Since")]
+        public DateTime RegisteredSince { get; set; }
         
         public ICollection<IncomeBillItem> IncomeBillItems { get; set; } = new List<IncomeBillItem>();
     }

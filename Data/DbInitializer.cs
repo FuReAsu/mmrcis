@@ -25,43 +25,81 @@ namespace mmrcis.Data
                 }
             }
             
-            string adminEmail = "admin@test.local";
-            string adminPassword = "P@ssw0rd";
-            string adminRole = "Admin";
-            string adminPhoneNumber = "111-222-3333";
+            //add Admin User
+            await InsertStaffUserRecords(context, userManager, roleManager,"admin@test.local","Administrator","Admin","111-2222-333","P@ssw0rd","No 27, Admin Steet,MMRCIS");
+            
+            //add Operator User
+            await InsertStaffUserRecords(context,userManager,roleManager,"operator@test.local","Clinic Operator","Operator","222-111-44","P@ssw0rd","No 65, Operator Road,MMRCIS");
+            
+            //add Nurse User
+            await InsertStaffUserRecords(context,userManager,roleManager,"nurse@test.local","Miss Nurse","Nurse","345-234-55","P@ssw0rd","No 5, Nurse Road,MMRCIS");
 
-            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            //add Doctor User
+            await InsertStaffUserRecords(context,userManager,roleManager,"doctor@test.local","Mister Doctor","Doctor","213-541-66","P@ssw0rd","No 25, Doctor Road,MMRCIS");
 
-            if (adminUser == null)
+            //add Patient Records
+            var jdDOB = new DateTime(1996, 5, 30);
+            var msDOB = new DateTime(1980, 10, 11);
+            await InsertPatientRecords(context, "Jane Doe", "No 78 NEPS Lumina Square","235-9832-51" , "jd@neps.com", jdDOB, "Female", "B" ); 
+            await InsertPatientRecords(context, "Michael Seyers", "No 34, Manila Street", "903-587-4144", "ms@indie.net", msDOB, "Male", "AB" ); 
+
+            //Insert CostRates
+            if (!context.CostRates.Any())
             {
-                var adminPerson = new Person
+                context.CostRates.AddRange(
+                    new CostRate { CostType = "GeneralConsultaion", UnitCost = 50.00m, Description = "General Consultation Fee", IsActive = true, RegisteredSince = DateTime.Now  },
+                    new CostRate { CostType = "SpecialistConsultation", UnitCost = 75.00m, Description = "Specialized Consultation Fee", IsActive = true, RegisteredSince = DateTime.Now },
+                    new CostRate { CostType = "OPD Visit", UnitCost = 25.00m, Description = "OPD Visit Fee", IsActive = true, RegisteredSince = DateTime.Now  },
+                    new CostRate { CostType = "X-Ray", UnitCost = 90.00m, Description = "X-Ray Scanning Fee", IsActive = true,RegisteredSince = DateTime.Now }
+                    );
+                await context.SaveChangesAsync();
+                Console.WriteLine("Initial Cost Rates seeded.");
+            }
+        }
+
+        private static async Task InsertStaffUserRecords(
+        CisDbContext context,
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+        string email,
+        string fullName, 
+        string role, 
+        string phoneNumber, 
+        string password,
+        string address)
+        {
+            var newUser = await userManager.FindByEmailAsync(email);
+
+            if (newUser == null)
+            {
+                var newPerson = new Person
                 {
-                    FullName = "Admin",
-                    PersonType = "Admin",
-                    Address = "123 Admin Lane, MMRCIS",
-                    PhoneNumber = adminPhoneNumber,
+                    FullName = fullName,
+                    PersonType = role,
+                    Address = address,
+                    PhoneNumber = phoneNumber,
                     RegisteredSince = DateTime.Now,
-                    Email = adminEmail
+                    Email = email 
                 };
-                context.Persons.Add(adminPerson);
+                context.Persons.Add(newPerson);
                 await context.SaveChangesAsync();
                 
-                adminUser = new ApplicationUser
+                newUser = new ApplicationUser
                 {
-                    UserName = adminEmail,
-                    Email = adminEmail,
+                    UserName = email,
+                    Email = email,
                     EmailConfirmed = true,
-                    PersonID = adminPerson.ID,
-                    PhoneNumber = adminPhoneNumber,
+                    PersonID = newPerson.ID, 
+                    PhoneNumber = phoneNumber,
                     PhoneNumberConfirmed = true
                 };
 
-                var result = await userManager.CreateAsync(adminUser, adminPassword);
+                var result = await userManager.CreateAsync(newUser, password);
                 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(adminUser, adminRole);
-                    Console.WriteLine($"Admin user '{adminEmail}' created and assigned '{adminRole}' role.");
+                    await userManager.AddToRoleAsync(newUser, role);
+                    Console.WriteLine($"New {role} user '{fullName}' created and assigned '{role}' role.");
                 }
                 else
                 {
@@ -70,236 +108,66 @@ namespace mmrcis.Data
             }
             else
             {
-                if (!await userManager.IsInRoleAsync(adminUser, adminRole))
+                if (!await userManager.IsInRoleAsync(newUser, role))
                 {
-                    await userManager.AddToRoleAsync(adminUser, adminRole);
-                    Console.WriteLine($"Admin user '{adminEmail}' already exists, ensuring '{adminRole}' role is assigned.");
+                    await userManager.AddToRoleAsync(newUser, role);
+                    Console.WriteLine($"New {role} user '{fullName}' already exists, ensuring '{role}' role is assigned.");
                 }
                 else
                 {
-                    Console.WriteLine($"Admin user '{adminEmail}' already exists and has '{adminRole}' role.");
+                    Console.WriteLine($"New {role} user '{fullName}' already exists and has '{role}' role.");
                 }
 
-                if (adminUser.PersonID == null)
+                if (newUser.PersonID == null)
                 {
-                    var existingPerson = await context.Persons.FirstOrDefaultAsync(p => p.Email == adminEmail && p.PersonType == "Admin");
+                    var existingPerson = await context.Persons.FirstOrDefaultAsync(p => p.Email == email && p.PersonType == role);
                     if (existingPerson != null)
                     {
-                        adminUser.PersonID = existingPerson.ID;
-                        await userManager.UpdateAsync(adminUser);
-                        Console.WriteLine($"Admin user '{adminEmail}' linked to existing Person ID: {existingPerson.ID}.");
+                        newUser.PersonID = existingPerson.ID;
+                        await userManager.UpdateAsync(newUser);
+                        Console.WriteLine($"New {role} user '{fullName}' linked to existing Person ID: {existingPerson.ID}.");
                     }
                 }
             }
-            string operatorEmail = "operator@test.local";
-            string operatorPassword = "P@ssw0rd";
-            string operatorRole = "Operator";
-            string operatorPhoneNumber = "444-555-6666";
+        }
 
-            var operatorUser = await userManager.FindByEmailAsync(operatorEmail);
-
-            if (operatorUser == null)
+        private static async Task InsertPatientRecords
+        (
+            CisDbContext context,    
+            string fullName,
+            string address,
+            string phoneNumber,
+            string email,
+            DateTime dob,
+            string sex,
+            string bloodGroup
+        )
+        {
+            var newPerson = new Person
             {
+                FullName = fullName,
+                Address = address,
+                PhoneNumber = phoneNumber,
+                Email = email,
+                DOB = dob,
+                Sex = sex,
+                BloodGroup = bloodGroup,
+                RegisteredSince = DateTime.Now,
+                PersonType = "Patient"
+            };
 
-                var operatorPerson = new Person
-                {
-                    FullName = "Clinic Operator",
-                    PersonType = "Operator",
-                    Address = "456 Operator Street, Clinic Office",
-                    RegisteredSince = DateTime.Now,
-                    PhoneNumber = operatorPhoneNumber,
-                    Email = operatorEmail
-                };
-                context.Persons.Add(operatorPerson);
-                await context.SaveChangesAsync();
+            context.Persons.Add(newPerson);
+            await context.SaveChangesAsync();
 
-                operatorUser = new ApplicationUser
-                {
-                    UserName = operatorEmail,
-                    Email = operatorEmail,
-                    EmailConfirmed = true,
-                    PersonID = operatorPerson.ID,
-                    PhoneNumber = operatorPhoneNumber,
-                    PhoneNumberConfirmed = true
-                };
-
-                var result = await userManager.CreateAsync(operatorUser, operatorPassword);
-                if (result.Succeeded)
-                {
-
-                    await userManager.AddToRoleAsync(operatorUser, operatorRole);
-                    Console.WriteLine($"Operator user '{operatorEmail}' created and assigned '{operatorRole}' role.");
-                }
-                else
-                {
-                    Console.WriteLine($"Error creating operator user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-                }
-            }
-            else
+            var newPatient = new Patient
             {
+                PersonID = newPerson.ID,
+                Status = "Active",
+                PatientSince = DateTime.Now
+            };
 
-                if (!await userManager.IsInRoleAsync(operatorUser, operatorRole))
-                {
-                    await userManager.AddToRoleAsync(operatorUser, operatorRole);
-                    Console.WriteLine($"Operator user '{operatorEmail}' already exists, ensuring '{operatorRole}' role is assigned.");
-                }
-                else
-                {
-                    Console.WriteLine($"Operator user '{operatorEmail}' already exists and has '{operatorRole}' role.");
-                }
-
-
-                if (operatorUser.PersonID == null)
-                {
-                    var existingPerson = await context.Persons.FirstOrDefaultAsync(p => p.Email == operatorEmail && p.PersonType == "Operator");
-                    if (existingPerson != null)
-                    {
-                        operatorUser.PersonID = existingPerson.ID;
-                        await userManager.UpdateAsync(operatorUser);
-                        Console.WriteLine($"Operator user '{operatorEmail}' linked to existing Person ID: {existingPerson.ID}.");
-                    }
-                }
-            }
-            string doctorEmail = "doctor@test.local";
-            string doctorPassword = "P@ssw0rd";
-            string doctorRole = "Doctor";
-            string doctorPhoneNumber = "444-555-6666";
-
-            var doctorUser = await userManager.FindByEmailAsync(doctorEmail);
-
-            if (doctorUser == null)
-            {
-
-                var doctorPerson = new Person
-                {
-                    FullName = "Clinic Doctor",
-                    PersonType = "Doctor",
-                    Address = "456 Doctor Street, Clinic Office",
-                    RegisteredSince = DateTime.Now,
-                    PhoneNumber = doctorPhoneNumber,
-                    Email = doctorEmail
-                };
-                context.Persons.Add(doctorPerson);
-                await context.SaveChangesAsync();
-
-                doctorUser = new ApplicationUser
-                {
-                    UserName = doctorEmail,
-                    Email = doctorEmail,
-                    EmailConfirmed = true,
-                    PersonID = doctorPerson.ID,
-                    PhoneNumber = doctorPhoneNumber,
-                    PhoneNumberConfirmed = true
-                };
-
-                var result = await userManager.CreateAsync(doctorUser, doctorPassword);
-                if (result.Succeeded)
-                {
-
-                    await userManager.AddToRoleAsync(doctorUser, doctorRole);
-                    Console.WriteLine($"Doctor user '{doctorEmail}' created and assigned '{doctorRole}' role.");
-                }
-                else
-                {
-                    Console.WriteLine($"Error creating doctor user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-                }
-            }
-            else
-            {
-
-                if (!await userManager.IsInRoleAsync(doctorUser, doctorRole))
-                {
-                    await userManager.AddToRoleAsync(doctorUser, doctorRole);
-                    Console.WriteLine($"Doctor user '{doctorEmail}' already exists, ensuring '{doctorRole}' role is assigned.");
-                }
-                else
-                {
-                    Console.WriteLine($"Doctor user '{doctorEmail}' already exists and has '{doctorRole}' role.");
-                }
-
-
-                if (doctorUser.PersonID == null)
-                {
-                    var existingPerson = await context.Persons.FirstOrDefaultAsync(p => p.Email == doctorEmail && p.PersonType == "Doctor");
-                    if (existingPerson != null)
-                    {
-                        doctorUser.PersonID = existingPerson.ID;
-                        await userManager.UpdateAsync(doctorUser);
-                        Console.WriteLine($"Doctor user '{doctorEmail}' linked to existing Person ID: {existingPerson.ID}.");
-                    }
-                }
-            }
-            string nurseEmail = "nurse@test.local";
-            string nursePassword = "P@ssw0rd";
-            string nurseRole = "Nurse";
-            string nursePhoneNumber = "444-555-6666";
-
-            var nurseUser = await userManager.FindByEmailAsync(nurseEmail);
-
-            if (nurseUser == null)
-            {
-
-                var nursePerson = new Person
-                {
-                    FullName = "Clinic Nurse",
-                    PersonType = "Nurse",
-                    Address = "456 Nurse Street, Clinic Office",
-                    RegisteredSince = DateTime.Now,
-                    PhoneNumber = nursePhoneNumber,
-                    Email = nurseEmail
-                };
-                context.Persons.Add(nursePerson);
-                await context.SaveChangesAsync();
-
-                nurseUser = new ApplicationUser
-                {
-                    UserName = nurseEmail,
-                    Email = nurseEmail,
-                    EmailConfirmed = true,
-                    PersonID = nursePerson.ID,
-                    PhoneNumber = nursePhoneNumber,
-                    PhoneNumberConfirmed = true
-                };
-
-                var result = await userManager.CreateAsync(nurseUser, nursePassword);
-                if (result.Succeeded)
-                {
-
-                    await userManager.AddToRoleAsync(nurseUser, nurseRole);
-                    Console.WriteLine($"Nurse user '{nurseEmail}' created and assigned '{nurseRole}' role.");
-                }
-                else
-                {
-                    Console.WriteLine($"Error creating nurse user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-                }
-            }
-            else
-            {
-
-                if (!await userManager.IsInRoleAsync(nurseUser, nurseRole))
-                {
-                    await userManager.AddToRoleAsync(nurseUser, nurseRole);
-                    Console.WriteLine($"Nurse user '{nurseEmail}' already exists, ensuring '{nurseRole}' role is assigned.");
-                }
-                else
-                {
-                    Console.WriteLine($"Nurse user '{nurseEmail}' already exists and has '{nurseRole}' role.");
-                }
-
-
-                if (nurseUser.PersonID == null)
-                {
-                    var existingPerson = await context.Persons.FirstOrDefaultAsync(p => p.Email == nurseEmail && p.PersonType == "Nurse");
-                    if (existingPerson != null)
-                    {
-                        nurseUser.PersonID = existingPerson.ID;
-                        await userManager.UpdateAsync(nurseUser);
-                        Console.WriteLine($"Nurse user '{nurseEmail}' linked to existing Person ID: {existingPerson.ID}.");
-                    }
-                }
-            }
-
-
+            context.Patients.Add(newPatient);
+            await context.SaveChangesAsync();
         }
     }
 }

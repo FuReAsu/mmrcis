@@ -14,6 +14,7 @@ namespace mmrcis.Data
         public DbSet<IncomeBill> IncomeBills { get; set; }
         public DbSet<IncomeBillItem> IncomeBillItems { get; set; }
         public DbSet<CostRate> CostRates { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,6 +67,20 @@ namespace mmrcis.Data
                 .HasOne(ibi => ibi.CostRate)
                 .WithMany(cr => cr.IncomeBillItems)
                 .HasForeignKey(ibi => ibi.CostRateID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Appointment Relationship with Person
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Person)
+                .WithMany(p => p.AppointmentsAsAssignedToDoctor)
+                .HasForeignKey(a => a.PersonID)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            //Appointment Relationship with Patient
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Patient)
+                .WithMany(p => p.Appointments)
+                .HasForeignKey(a => a.PatientID)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

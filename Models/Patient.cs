@@ -22,5 +22,7 @@ namespace mmrcis.Models
         public DateTime PatientSince { get; set; }
 
         public ICollection<IncomeBill> IncomeBills { get; set; } = new List<IncomeBill>();
+
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }
