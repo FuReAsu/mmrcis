@@ -181,7 +181,7 @@ namespace mmrcis.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, CostRate model)
+        public async Task<IActionResult> DeleteConfirmed(int id, CostRate model)
         {
 
             if (id != model.ID)

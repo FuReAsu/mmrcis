@@ -1,0 +1,48 @@
+@model mmrcis.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Patient)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Patient.Person.FullName) (ID: @Model.Patient.ID)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Person.FullName) 
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.AppointmentDateTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.AppointmentDateTime)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-area="Operator" asp-controller="Appointment" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a> |
+    <a asp-area="Operator" asp-controller="Appointment" asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
