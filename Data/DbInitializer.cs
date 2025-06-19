@@ -142,32 +142,42 @@ namespace mmrcis.Data
             string sex,
             string bloodGroup
         )
-        {
-            var newPerson = new Person
+        {   var checkPerson = await context.Patients
+                                    .Include(p => p.Person)
+                                    .FirstOrDefaultAsync(p => p.Person.FullName == fullName);
+            
+            if (checkPerson == null)
             {
-                FullName = fullName,
-                Address = address,
-                PhoneNumber = phoneNumber,
-                Email = email,
-                DOB = dob,
-                Sex = sex,
-                BloodGroup = bloodGroup,
-                RegisteredSince = DateTime.Now,
-                PersonType = "Patient"
-            };
+                var newPerson = new Person
+                {
+                    FullName = fullName,
+                    Address = address,
+                    PhoneNumber = phoneNumber,
+                    Email = email,
+                    DOB = dob,
+                    Sex = sex,
+                    BloodGroup = bloodGroup,
+                    RegisteredSince = DateTime.Now,
+                    PersonType = "Patient"
+                };
 
-            context.Persons.Add(newPerson);
-            await context.SaveChangesAsync();
+                context.Persons.Add(newPerson);
+                await context.SaveChangesAsync();
 
-            var newPatient = new Patient
+                var newPatient = new Patient
+                {
+                    PersonID = newPerson.ID,
+                    Status = "Active",
+                    PatientSince = DateTime.Now
+                };
+
+                context.Patients.Add(newPatient);
+                await context.SaveChangesAsync();
+            }
+            else
             {
-                PersonID = newPerson.ID,
-                Status = "Active",
-                PatientSince = DateTime.Now
-            };
-
-            context.Patients.Add(newPatient);
-            await context.SaveChangesAsync();
+                Console.WriteLine($"Patient {fullName} already  exists, skipping seeding");
+            }
         }
     }
 }

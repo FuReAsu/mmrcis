@@ -26,6 +26,12 @@ namespace mmrcis.Models
         [ForeignKey("PersonID")]
         public Person Person { get; set; } = null!;
 
+        [Display(Name = "Patient Check In Out Record")]
+        public int? PatientCheckInOutID { get; set; }
+
+        [ForeignKey("PatientCheckInOutID")]
+        public PatientCheckInOut? PatientCheckInOut { get; set; }
+
         public ICollection<IncomeBillItem> IncomeBillItems { get; set; } = new List<IncomeBillItem>();
     }
 }

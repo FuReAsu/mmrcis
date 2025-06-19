@@ -82,6 +82,55 @@ namespace mmrcis.Data
                 .WithMany(p => p.Appointments)
                 .HasForeignKey(a => a.PatientID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //PatientCheckInOut Relationship with IncomeBill
+            modelBuilder.Entity<PatientCheckInOut>()
+                .HasOne(pcio => pcio.IncomeBill)
+                .WithOne(ib => ib.PatientCheckInOut)
+                .HasForeignKey<IncomeBill>(ib => ib.PatientCheckInOutID)
+                .OnDelete(DeleteBehavior.Restrict);
+                
+            //PatientCheckInOut Relationship with Patient
+            modelBuilder.Entity<PatientCheckInOut>()
+                .HasOne(pcio => pcio.Patient)
+                .WithMany(p => p.PatientCheckInOuts)
+                .HasForeignKey(pcio => pcio.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //PatientCheckInOut Relationship with PatientVisitRecord
+            modelBuilder.Entity<PatientCheckInOut>()
+                .HasOne(pcio => pcio.PatientVisitRecord)
+                .WithOne(pvr => pvr.PatientCheckInOut)
+                .HasForeignKey<PatientVisitRecord>(pvr => pvr.PatientCheckInOutID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //PatientVisitRecord Relationship with Patient
+            modelBuilder.Entity<PatientVisitRecord>()
+                .HasOne(pvr => pvr.Patient)
+                .WithMany(p => p.PatientVisitRecord)
+                .HasForeignKey(pvr => pvr.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //PatientVisitRecord Relationship with Doctor(Person)
+            modelBuilder.Entity<PatientVisitRecord>()
+                .HasOne(pvr => pvr.Doctor)
+                .WithMany(p => p.PatientVisitRecordAsReceivedByDoctor)
+                .HasForeignKey(pvr => pvr.DoctorID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //PatientVisitRecord Relationship with PatientVitals
+            modelBuilder.Entity<PatientVisitRecord>()
+                .HasOne(pvr => pvr.PatientVitals)
+                .WithOne(pv => pv.PatientVisitRecord)
+                .HasForeignKey<PatientVitals>(pv => pv.PatientVisitRecordID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //PatientVitals Relationship with MedicalStaff(Person)
+            modelBuilder.Entity<PatientVitals>()
+                .HasOne(pv => pv.MedicalStaff)
+                .WithMany(ms => ms.PatientVitalsAsMedicalStaff )
+                .HasForeignKey(pv => pv.MedicalStaffID)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -24,5 +24,9 @@ namespace mmrcis.Models
         public ICollection<IncomeBill> IncomeBills { get; set; } = new List<IncomeBill>();
 
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+
+        public ICollection<PatientCheckInOut> PatientCheckInOuts { get; set; } = new List<PatientCheckInOut>();
+
+        public ICollection<PatientVisitRecord> PatientVisitRecord { get; set; } = new List<PatientVisitRecord>();
     }
 }

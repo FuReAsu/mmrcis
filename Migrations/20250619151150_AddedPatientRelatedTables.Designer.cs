@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mmrcis.Data;
 
@@ -11,9 +12,11 @@ using mmrcis.Data;
 namespace mmrcis.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619151150_AddedPatientRelatedTables")]
+    partial class AddedPatientRelatedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,6 +252,7 @@ namespace mmrcis.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Remarks")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 

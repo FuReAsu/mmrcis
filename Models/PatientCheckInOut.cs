@@ -3,37 +3,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace mmrcis.Models
 {
-    public class Appointment
+    public class PatientCheckInOut
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-
+        
         [Required]
         [Display(Name = "Patient")]
         public int PatientID { get; set; }
 
         [ForeignKey("PatientID")]
         public Patient Patient { get; set; } = null!;
+       
+        [Required]
+        [Display(Name = "Date of CheckInOut")]
+        public DateTime Date { get; set; }  
 
         [Required]
-        [Display(Name = "Doctor")]
-        public int PersonID { get; set; }
-
-        [ForeignKey("PersonID")]
-        public Person Person { get; set; } = null!;
+        [Display(Name = "Check In Time")]
+        public DateTime CheckInTime { get; set; }
 
         [Required]
-        [Display(Name = "Appointment Date & Time")]
-        [DataType(DataType.DateTime)]
-        public DateTime AppointmentDateTime { get; set; }
-        
-        [StringLength(20)]
-        [Display(Name = "Appointment Status")]
-        public string Status { get; set; } = "Schduled";
+        [Display(Name = "Check Out Time")]
+        public DateTime CheckOutTime { get; set; }
 
-        [StringLength(200)]
         [Display(Name = "Remarks")]
         public string? Remarks { get; set; } 
+        
+        public IncomeBill? IncomeBill { get; set; } 
+
+        public PatientVisitRecord? PatientVisitRecord { get; set; }
     }
 }

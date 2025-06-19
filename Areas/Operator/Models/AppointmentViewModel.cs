@@ -31,7 +31,7 @@ namespace mmrcis.Areas.Operator.Models
 
         [StringLength(200)]
         [Display(Name = "Remarks")]
-        public string Remarks { get; set; } = "";
+        public string? Remarks { get; set; } 
 
         public IEnumerable<SelectListItem>? Patients { get; set; }
         public IEnumerable<SelectListItem>? Doctors { get; set; }

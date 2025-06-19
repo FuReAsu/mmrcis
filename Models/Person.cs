@@ -60,5 +60,9 @@ namespace mmrcis.Models
         public ICollection<IncomeBill> IncomeBillsAsCreatedByOperator { get; set; } = new List<IncomeBill>();
 
         public ICollection<Appointment> AppointmentsAsAssignedToDoctor { get; set; } = new List<Appointment>();
+
+        public ICollection<PatientVisitRecord> PatientVisitRecordAsReceivedByDoctor { get; set; } = new List<PatientVisitRecord>();
+
+        public ICollection<PatientVitals> PatientVitalsAsMedicalStaff { get; set; } = new List<PatientVitals>();
     }
 }
