@@ -31,6 +31,10 @@ namespace mmrcis.Models
 
         [ForeignKey("PatientCheckInOutID")]
         public PatientCheckInOut? PatientCheckInOut { get; set; }
+       
+        [Display(Name = "BillTotal")]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal BillTotal { get; set; }
 
         public ICollection<IncomeBillItem> IncomeBillItems { get; set; } = new List<IncomeBillItem>();
     }

@@ -35,5 +35,7 @@ namespace mmrcis.Models
         [StringLength(200)]
         [Display(Name = "Remarks")]
         public string? Remarks { get; set; } 
+
+        public PatientCheckInOut? PatientCheckInOut { get; set; }
     }
 }

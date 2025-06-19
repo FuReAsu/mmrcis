@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace mmrcis.Models
 {
@@ -15,7 +16,14 @@ namespace mmrcis.Models
 
         [ForeignKey("PatientID")]
         public Patient Patient { get; set; } = null!;
-       
+        
+        [Required]
+        [Display(Name = "Appointment")]
+        public int AppointmentID { get; set; }
+
+        [ForeignKey("AppointmentID")]
+        public Appointment Appointment { get; set; } = null!;
+
         [Required]
         [Display(Name = "Date of CheckInOut")]
         public DateTime Date { get; set; }  
@@ -24,9 +32,8 @@ namespace mmrcis.Models
         [Display(Name = "Check In Time")]
         public DateTime CheckInTime { get; set; }
 
-        [Required]
         [Display(Name = "Check Out Time")]
-        public DateTime CheckOutTime { get; set; }
+        public DateTime? CheckOutTime { get; set; }
 
         [Display(Name = "Remarks")]
         public string? Remarks { get; set; } 

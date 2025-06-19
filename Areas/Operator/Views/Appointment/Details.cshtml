@@ -45,4 +45,11 @@
 <div>
     <a asp-area="Operator" asp-controller="Appointment" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a> |
     <a asp-area="Operator" asp-controller="Appointment" asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-area="Operator" 
+       asp-controller="PatientCheckInOut" 
+       asp-action="Create" 
+       asp-route-appointmentID="@Model.ID" 
+       class="btn btn-primary">
+        Create Patient Check-In
+    </a>
 </div>

@@ -15,7 +15,10 @@ namespace mmrcis.Data
         public DbSet<IncomeBillItem> IncomeBillItems { get; set; }
         public DbSet<CostRate> CostRates { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-
+        public DbSet<PatientCheckInOut> PatientCheckInOuts { get; set; }
+        public DbSet<PatientVisitRecord> PatientVisitRecords { get; set; }
+        public DbSet<PatientVitals> PatientVitalss { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -103,6 +106,13 @@ namespace mmrcis.Data
                 .WithOne(pvr => pvr.PatientCheckInOut)
                 .HasForeignKey<PatientVisitRecord>(pvr => pvr.PatientCheckInOutID)
                 .OnDelete(DeleteBehavior.Cascade);
+                
+            //PatientCheckInOut Relationship with Appointment
+            modelBuilder.Entity<PatientCheckInOut>()
+                .HasOne(pcio => pcio.Appointment)
+                .WithOne(a => a.PatientCheckInOut)
+                .HasForeignKey<PatientCheckInOut>(pcio => pcio.AppointmentID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //PatientVisitRecord Relationship with Patient
             modelBuilder.Entity<PatientVisitRecord>()

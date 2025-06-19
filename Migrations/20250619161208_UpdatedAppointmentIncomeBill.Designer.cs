@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mmrcis.Data;
 
@@ -11,9 +12,11 @@ using mmrcis.Data;
 namespace mmrcis.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619161208_UpdatedAppointmentIncomeBill")]
+    partial class UpdatedAppointmentIncomeBill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -462,7 +465,7 @@ namespace mmrcis.Migrations
 
                     b.HasIndex("PatientID");
 
-                    b.ToTable("PatientCheckInOuts");
+                    b.ToTable("PatientCheckInOut");
                 });
 
             modelBuilder.Entity("mmrcis.Models.PatientVisitRecord", b =>
@@ -503,7 +506,7 @@ namespace mmrcis.Migrations
 
                     b.HasIndex("PatientID");
 
-                    b.ToTable("PatientVisitRecords");
+                    b.ToTable("PatientVisitRecord");
                 });
 
             modelBuilder.Entity("mmrcis.Models.PatientVitals", b =>
@@ -548,7 +551,7 @@ namespace mmrcis.Migrations
                     b.HasIndex("PatientVisitRecordID")
                         .IsUnique();
 
-                    b.ToTable("PatientVitalss");
+                    b.ToTable("PatientVitals");
                 });
 
             modelBuilder.Entity("mmrcis.Models.Person", b =>
@@ -766,7 +769,7 @@ namespace mmrcis.Migrations
                     b.HasOne("mmrcis.Models.Appointment", "Appointment")
                         .WithOne("PatientCheckInOut")
                         .HasForeignKey("mmrcis.Models.PatientCheckInOut", "AppointmentID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("mmrcis.Models.Patient", "Patient")
