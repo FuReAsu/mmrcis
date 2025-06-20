@@ -24,7 +24,7 @@ namespace mmrcis.Areas.Operator.Controllers
                                RoleManager<IdentityRole> roleManager,
                                CisDbContext context,
                                ILogger<PatientCheckInOutController> logger,
-                               IAuditService auditService) 
+                               IAuditService auditService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -58,6 +58,7 @@ namespace mmrcis.Areas.Operator.Controllers
         private async Task PopulateDropdowns(PatientCheckInOutViewModel? model = null)
         {
             var appointments = await _context.Appointments
+                                .Where(a => a.Status == "Scheduled")
                                 .Include(a => a.Patient)
                                     .ThenInclude(p => p.Person)
                                 .Include(a => a.Person)
@@ -73,14 +74,13 @@ namespace mmrcis.Areas.Operator.Controllers
         }
 
 				public async Task<IActionResult> Index()
-				{
+				{ 
             var patientcheckinout = await _context.PatientCheckInOuts
                                                 .Include(pcio => pcio.Patient)
                                                     .ThenInclude(p => p.Person)
                                                 .Include(pcio => pcio.Appointment)
                                                     .ThenInclude(a => a.Person)
-                                                .ToListAsync();
-
+                                                    .ToListAsync();
             return View(patientcheckinout);
 				}
 
@@ -124,8 +124,12 @@ namespace mmrcis.Areas.Operator.Controllers
                             .FirstOrDefaultAsync(p => p.ID == model.PatientID);
         
                 string patientName = patient?.Person.FullName ?? "Unknown";
+                var appointment = await _context.Appointments.FindAsync(model.AppointmentID);
+                appointment.Status = "Completed";
+                _context.Update(appointment);
+                await _context.SaveChangesAsync();
 
-                TempData["SuccessMessage"] = $"New PatientCheckInOut Record for Patient {patientName} created successfully!";
+                TempData["SuccessMessage"] = $"New PatientCheckInOut Record for Patient {patientName} created successfully!\n Status of Appointment {model.AppointmentID} changed to Completed ";
                 _logger.LogInformation($"Operator created PatientCheckInOut Record for Patient {patientName}");
 
                 string logParameters = $"Patient = {patientName}, Appointment = {model.AppointmentID}";
@@ -133,7 +137,6 @@ namespace mmrcis.Areas.Operator.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            Console.WriteLine("#######################################################");
             foreach (var state in ModelState)
             {
                 foreach (var error in state.Value.Errors)
@@ -143,6 +146,141 @@ namespace mmrcis.Areas.Operator.Controllers
             }
             await PopulateDropdowns(model);
             return View(model);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var patientcheckinout = await _context.PatientCheckInOuts
+                                        .Include(pcio => pcio.Patient)
+                                            .ThenInclude(p => p.Person)
+                                        .Include(pcio => pcio.Appointment)
+                                            .ThenInclude(a => a.Person)
+                                        .FirstOrDefaultAsync(pcio => pcio.ID == id);
+
+            if (patientcheckinout == null)
+            {
+                return NotFound();
+            }
+            return View(patientcheckinout);
+        }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+               return NotFound();
+            }
+            var patientcheckinout = await _context.PatientCheckInOuts.FindAsync(id);
+
+            if ( patientcheckinout == null )
+            {
+                return NotFound();
+            }
+
+            var patientcheckinoutViewModel = new PatientCheckInOutViewModel()
+            {
+                PatientID = patientcheckinout.PatientID,
+                AppointmentID = patientcheckinout.AppointmentID,
+                Date = patientcheckinout.Date,
+                CheckInTime = patientcheckinout.CheckInTime.TimeOfDay,
+                CheckOutTime = patientcheckinout.CheckOutTime.Value.TimeOfDay,
+                Remarks = patientcheckinout.Remarks,
+            };
+            
+            await PopulateDropdowns(patientcheckinoutViewModel);
+            return View(patientcheckinoutViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, PatientCheckInOutViewModel model)
+        {
+            if (model.ID != id)
+            {
+                return NotFound();
+            }
+            
+            if (ModelState.IsValid)
+            {
+                var patientcheckinout = await _context.PatientCheckInOuts
+                            .Include(pcio => pcio.Patient)
+                                .ThenInclude(p => p.Person)
+                            .Include(pcio => pcio.Appointment)
+                                .ThenInclude(a => a.Person)
+                            .FirstOrDefaultAsync(pcio => pcio.ID == id);
+                    
+                if ( patientcheckinout == null )
+                {
+                    return NotFound();
+                }
+                    
+                string patientName = patientcheckinout.Patient.Person.FullName;
+                patientcheckinout.CheckOutTime = model.Date.Date.Add(model.CheckOutTime);
+                patientcheckinout.Remarks = model.Remarks;
+
+                _context.Update(patientcheckinout);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = $"PatientCheckInOut Record for Patient {patientName} edited successfully!";
+                _logger.LogInformation($"Operator edited PatientCheckInOut Record for Patient {patientName}");
+
+                string logParameters = $"Patient = {patientName}, Appointment = {model.AppointmentID}";
+                await GenerateAuditLog("Edit", logParameters);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                NotFound();
+            }
+            var patientcheckinout = await _context.PatientCheckInOuts
+                                    .Include(pcio => pcio.Patient)
+                                        .ThenInclude(p => p.Person)
+                                    .Include(pcio => pcio.Appointment)
+                                        .ThenInclude(a => a.Person)
+                                    .FirstOrDefaultAsync(pcio => pcio.ID == id);
+            
+            if (patientcheckinout == null)
+            {
+                return NotFound();
+            }
+            return View(patientcheckinout); 
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var patientcheckinout = await _context.PatientCheckInOuts
+                                    .Include(pcio => pcio.Patient)
+                                        .ThenInclude(p => p.Person)
+                                    .Include(pcio => pcio.Appointment)
+                                        .ThenInclude(a => a.Person)
+                                    .FirstOrDefaultAsync(pcio => pcio.ID == id);
+
+            if (patientcheckinout != null)
+            {
+                string appointmentdatetime = patientcheckinout.Appointment.AppointmentDateTime.ToString("yyyy-MM-dd | HH:mm");  
+                string patientfullname = patientcheckinout.Patient.Person.FullName;
+                string doctorfullname = patientcheckinout.Appointment.Person.FullName;
+                _context.Remove(patientcheckinout);
+                await _context.SaveChangesAsync();
+                
+                TempData["SuccessMessage"] = $"Successfully deleted the appointment for Patient {patientfullname} to Doctor {doctorfullname} at {appointmentdatetime}";
+                _logger.LogInformation($"Operator deleted appointment for Patient {patientfullname} to Doctor {doctorfullname} at {appointmentdatetime}");
+                
+                string logParameters = $"Deleted Appointment = {patientfullname} to {doctorfullname} at {appointmentdatetime}";
+                await GenerateAuditLog("Delete", logParameters); 
+                
+            }
+            return RedirectToAction(nameof(Index));
         }
 
     }

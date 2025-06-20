@@ -37,6 +37,8 @@ namespace mmrcis.Data
             //add Doctor User
             await InsertStaffUserRecords(context,userManager,roleManager,"doctor@test.local","Mister Doctor","Doctor","213-541-66","P@ssw0rd","No 25, Doctor Road,MMRCIS");
 
+            await InsertStaffUserRecords(context,userManager,roleManager,"doctor2@test.local","John Watkins","Doctor","345-561-77","P@ssw0rd","No 47, Hello Road,MMRCIS");
+
             //add Patient Records
             var jdDOB = new DateTime(1996, 5, 30);
             var msDOB = new DateTime(1980, 10, 11);

@@ -2,9 +2,10 @@
 
 @{
     ViewData["Title"] = "Patient Check In/Out Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1>@ViewData["Title"]</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">New Check In/Out Record</a>
@@ -50,33 +51,21 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Patient.Person.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Appointment.ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CheckInTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CheckOutTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Remarks)
-                </td>
-                <td>
-                    <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit</a> |
-                    <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-secondary">Details</a> |
-                    <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Patient.Person.FullName</td>
+            <td>#@item.Appointment.ID</td>
+            <td>@item.Date.ToString("yyyy-MM-dd")</td>
+            <td>@item.CheckInTime.ToString("HH:mm")</td>
+            <td>@(item.CheckOutTime?.ToString("HH:mm") ?? "N/A")</td>
+            <td>@item.Remarks</td>
+            <td>
+                <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit</a> |
+                <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-secondary">Details</a> |
+                <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

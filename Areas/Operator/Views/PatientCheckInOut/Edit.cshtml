@@ -1,36 +1,39 @@
 @model mmrcis.Areas.Operator.Models.PatientCheckInOutViewModel
 
 @{
-    ViewData["Title"] = "Create Patient Check In/Out";
+    ViewData["Title"] = "Edit Patient Check In/Out";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<form asp-action="Create" method="post">
+<form asp-action="Edit" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+    <input type="hidden" asp-for="ID" />
     <div class="form-group mb-3">
         <label asp-for="PatientID"></label>
-        <select asp-for="PatientID" class="form-control" asp-items="ViewBag.Patients"></select>
+        <select asp-for="PatientID" class="form-control" asp-items="ViewBag.Patients" disabled></select>
+        <input type="hidden" asp-for="PatientID" />
         <span asp-validation-for="PatientID" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="AppointmentID"></label>
-        <select asp-for="AppointmentID" class="form-control" asp-items="ViewBag.Appointments"></select>
+        <select asp-for="AppointmentID" class="form-control" asp-items="ViewBag.Appointments" disabled></select>
+        <input type="hidden" asp-for="AppointmentID" />
         <span asp-validation-for="AppointmentID" class="text-danger"></span>
     </div> 
-    
+
     <div class="form-group mb-3">
         <label asp-for="Date" class="control-label"></label>
-        <input asp-for="Date" class="form-control" type="date" /> 
+        <input asp-for="Date" class="form-control" type="date" disabled />
         <span asp-validation-for="Date" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="CheckInTime"></label>
-        <input asp-for="CheckInTime" class="form-control timepicker" type="text" />
+        <input asp-for="CheckInTime" class="form-control timepicker" type="text" disabled />
         <span asp-validation-for="CheckInTime" class="text-danger"></span>
     </div>
 
@@ -47,7 +50,7 @@
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" value="Save" class="btn btn-primary" />
         <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>
 </form>

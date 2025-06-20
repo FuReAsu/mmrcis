@@ -1,0 +1,54 @@
+@model mmrcis.Models.PatientCheckInOut
+
+@{
+    ViewData["Title"] = "PatientCheckInOut Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Patient)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Patient.Person.FullName) (ID: @Model.Patient.ID)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Appointment)
+        </dt>
+        <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.AppointmentID)# @Html.DisplayFor(model => model.Patient.Person.FullName) => @Html.DisplayFor(model => model.Appointment.Person.FullName) at @Html.DisplayFor(model => model.Appointment.AppointmentDateTime)  
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.Date.ToString("yyyy-MM-dd")
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CheckInTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.CheckInTime.ToString("HH:mm")
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CheckOutTime)
+        </dt>
+        <dd class="col-sm-9">
+            @(Model.CheckOutTime?.ToString("HH:mm") ?? "N/A")
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a> |
+    <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
