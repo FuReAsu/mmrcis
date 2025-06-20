@@ -61,7 +61,7 @@
             <td>@(item.CheckOutTime?.ToString("HH:mm") ?? "N/A")</td>
             <td>@item.Remarks</td>
             <td>
-                <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit</a> |
+                <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">CheckOut</a> |
                 <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-secondary">Details</a> |
                 <a asp-area="Operator" asp-controller="PatientCheckInOut" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
             </td>

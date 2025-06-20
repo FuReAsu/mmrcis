@@ -42,7 +42,12 @@ namespace mmrcis.Areas.Admin.Controllers
             string currentAction = action;
             string currentController = "Staff";
             string currentParameters = parameters;
-            string currentIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            string currentIpAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(currentIpAddress))
+            {
+                currentIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            }
             string currentUserAgent = Request.Headers["User-Agent"].ToString();
             await _auditService.LogActionAsync(
                     currentUserName,

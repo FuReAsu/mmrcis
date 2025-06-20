@@ -43,7 +43,12 @@ namespace mmrcis.Areas.Operator.Controllers
             string currentAction = action;
             string currentController = "PatientCheckInOut";
             string currentParameters = parameters;
-            string currentIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            string currentIpAddress = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(currentIpAddress))
+            {
+                currentIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            }
             string currentUserAgent = Request.Headers["User-Agent"].ToString();
             await _auditService.LogActionAsync(
                     currentUserName,
@@ -125,11 +130,11 @@ namespace mmrcis.Areas.Operator.Controllers
         
                 string patientName = patient?.Person.FullName ?? "Unknown";
                 var appointment = await _context.Appointments.FindAsync(model.AppointmentID);
-                appointment.Status = "Completed";
+                appointment.Status = "CheckedIn";
                 _context.Update(appointment);
                 await _context.SaveChangesAsync();
 
-                TempData["SuccessMessage"] = $"New PatientCheckInOut Record for Patient {patientName} created successfully!\n Status of Appointment {model.AppointmentID} changed to Completed ";
+                TempData["SuccessMessage"] = $"New PatientCheckInOut Record for Patient {patientName} created successfully!\n Status of Appointment {model.AppointmentID} changed to CheckedIn ";
                 _logger.LogInformation($"Operator created PatientCheckInOut Record for Patient {patientName}");
 
                 string logParameters = $"Patient = {patientName}, Appointment = {model.AppointmentID}";
@@ -187,7 +192,7 @@ namespace mmrcis.Areas.Operator.Controllers
                 AppointmentID = patientcheckinout.AppointmentID,
                 Date = patientcheckinout.Date,
                 CheckInTime = patientcheckinout.CheckInTime.TimeOfDay,
-                CheckOutTime = patientcheckinout.CheckOutTime.Value.TimeOfDay,
+                CheckOutTime = DateTime.Now.TimeOfDay,
                 Remarks = patientcheckinout.Remarks,
             };
             
@@ -224,8 +229,11 @@ namespace mmrcis.Areas.Operator.Controllers
 
                 _context.Update(patientcheckinout);
                 await _context.SaveChangesAsync();
+                
+                var appointment = await _context.Appointments.FindAsync(patientcheckinout.Appointment.ID);
+                appointment.Status = "CheckedOut";
 
-                TempData["SuccessMessage"] = $"PatientCheckInOut Record for Patient {patientName} edited successfully!";
+                TempData["SuccessMessage"] = $"PatientCheckInOut Record for Patient {patientName} edited successfully!\n And Status of Appointment {model.AppointmentID} changed to CheckedOut";
                 _logger.LogInformation($"Operator edited PatientCheckInOut Record for Patient {patientName}");
 
                 string logParameters = $"Patient = {patientName}, Appointment = {model.AppointmentID}";

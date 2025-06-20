@@ -1,0 +1,74 @@
+@model IEnumerable<mmrcis.Models.AuditLog>
+
+@{
+    ViewData["Title"] = "CIS AuditLogs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-striped table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Timestamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ControllerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Action)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Parameters)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IpAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserAgent)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+					<tr>
+							<td>
+									@Html.DisplayFor(modelItem => item.Timestamp)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.PersonID)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.UserName)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.ControllerName)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.Action)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.Parameters)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.IpAddress)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.UserAgent)
+							</td>
+					</tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
