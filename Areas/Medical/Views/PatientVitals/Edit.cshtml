@@ -1,0 +1,67 @@
+@model mmrcis.Areas.Medical.Models.PatientVitalsViewModel
+
+@{
+    ViewData["Title"] = "Edit Patient Vitals";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="ID" />
+    <input type="hidden" asp-for="PatientVisitRecordID" />
+    <input type="hidden" asp-for="MedicalStaffID" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Temperature" class="form-label"></label>
+        <input asp-for="Temperature" class="form-control" />
+        <span asp-validation-for="Temperature" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="PulseRate" class="form-label"></label>
+        <input asp-for="PulseRate" class="form-control" />
+        <span asp-validation-for="PulseRate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="RespiratorRate" class="form-label"></label>
+        <input asp-for="RespiratorRate" class="form-control" />
+        <span asp-validation-for="RespiratorRate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="BloodPressureSystolic" class="form-label"></label>
+        <input asp-for="BloodPressureSystolic" class="form-control" />
+        <span asp-validation-for="BloodPressureSystolic" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="BloodPressureDiastolic" class="form-label"></label>
+        <input asp-for="BloodPressureDiastolic" class="form-control" />
+        <span asp-validation-for="BloodPressureDiastolic" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="OxygenSaturation" class="form-label"></label>
+        <input asp-for="OxygenSaturation" class="form-control" />
+        <span asp-validation-for="OxygenSaturation" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save Changes" class="btn btn-primary" />
+        <a asp-action="Details" asp-controller="PatientVitals" asp-route-id=@Model.ID class="btn btn-secondary">Cancel</a>
+        <a asp-action="Index" asp-controller="PatientVisitRecord" class="btn btn-secondary">Back to list</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -275,18 +275,25 @@ namespace mmrcis.Areas.Operator.Controllers
 
             if (patientcheckinout != null)
             {
-                string appointmentdatetime = patientcheckinout.Appointment.AppointmentDateTime.ToString("yyyy-MM-dd | HH:mm");  
-                string patientfullname = patientcheckinout.Patient.Person.FullName;
-                string doctorfullname = patientcheckinout.Appointment.Person.FullName;
-                _context.Remove(patientcheckinout);
-                await _context.SaveChangesAsync();
-                
-                TempData["SuccessMessage"] = $"Successfully deleted the appointment for Patient {patientfullname} to Doctor {doctorfullname} at {appointmentdatetime}";
-                _logger.LogInformation($"Operator deleted appointment for Patient {patientfullname} to Doctor {doctorfullname} at {appointmentdatetime}");
-                
-                string logParameters = $"Deleted Appointment = {patientfullname} to {doctorfullname} at {appointmentdatetime}";
-                await GenerateAuditLog("Delete", logParameters); 
-                
+                try
+                {
+                    string appointmentdatetime = patientcheckinout.Appointment.AppointmentDateTime.ToString("yyyy-MM-dd | HH:mm");  
+                    string patientfullname = patientcheckinout.Patient.Person.FullName;
+                    string doctorfullname = patientcheckinout.Appointment.Person.FullName;
+                    _context.Remove(patientcheckinout);
+                    await _context.SaveChangesAsync();
+                    
+                    TempData["SuccessMessage"] = $"Successfully deleted the checkinout record for Patient {patientfullname} to Doctor {doctorfullname} at {appointmentdatetime}";
+                    _logger.LogInformation($"Operator deleted checkinout record for Patient {patientfullname} to Doctor {doctorfullname} at {appointmentdatetime}");
+                    
+                    string logParameters = $"Deleted Appointment = {patientfullname} to {doctorfullname} at {appointmentdatetime}";
+                    await GenerateAuditLog("Delete", logParameters); 
+                }
+                catch (DbUpdateException dbEx)
+                {
+                    TempData["ErrorMessage"] = "CheckInOut record could not be deleted because related visit records exist.";
+                    _logger.LogError(dbEx, "Error deleting appointment with ID {id}", id);
+                }
             }
             return RedirectToAction(nameof(Index));
         }

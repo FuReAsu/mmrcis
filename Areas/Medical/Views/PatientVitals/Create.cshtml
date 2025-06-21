@@ -1,0 +1,62 @@
+@model mmrcis.Areas.Medical.Models.PatientVitalsViewModel
+
+@{
+    ViewData["Title"] = "Create Patient Vitals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create Patient Vitals</h1>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="PatientVisitRecordID" />
+    <input type="hidden" asp-for="MedicalStaffID" />
+
+    <div class="mb-3">
+        <label asp-for="Temperature"></label>
+        <input asp-for="Temperature" class="form-control" />
+        <span asp-validation-for="Temperature" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PulseRate"></label>
+        <input asp-for="PulseRate" class="form-control" />
+        <span asp-validation-for="PulseRate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RespiratorRate"></label>
+        <input asp-for="RespiratorRate" class="form-control" />
+        <span asp-validation-for="RespiratorRate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BloodPressureSystolic"></label>
+        <input asp-for="BloodPressureSystolic" class="form-control" />
+        <span asp-validation-for="BloodPressureSystolic" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BloodPressureDiastolic"></label>
+        <input asp-for="BloodPressureDiastolic" class="form-control" />
+        <span asp-validation-for="BloodPressureDiastolic" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="OxygenSaturation"></label>
+        <input asp-for="OxygenSaturation" class="form-control" />
+        <span asp-validation-for="OxygenSaturation" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-controller="PatientVisitRecord" asp-action="Index" asp-area="Medical" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

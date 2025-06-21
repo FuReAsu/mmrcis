@@ -105,7 +105,7 @@ namespace mmrcis.Data
                 .HasOne(pcio => pcio.PatientVisitRecord)
                 .WithOne(pvr => pvr.PatientCheckInOut)
                 .HasForeignKey<PatientVisitRecord>(pvr => pvr.PatientCheckInOutID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
                 
             //PatientCheckInOut Relationship with Appointment
             modelBuilder.Entity<PatientCheckInOut>()

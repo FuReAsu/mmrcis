@@ -1,0 +1,44 @@
+@model IEnumerable<mmrcis.Models.PatientVitals>
+
+@{
+    ViewData["Title"] = "Patient Vitals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Patient</th>
+            <th>Visit Date</th>
+            <th>Medical Staff</th>
+            <th>Temp (°C)</th>
+            <th>Pulse</th>
+            <th>Respiratory</th>
+            <th>BP (Sys/Dia)</th>
+            <th>O₂ Sat (%)</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vitals in Model)
+        {
+            <tr>
+                <td>@vitals.PatientVisitRecord.Patient.Person.FullName</td>
+                <td>@vitals.PatientVisitRecord.DateOfVisit?.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@vitals.MedicalStaff.FullName</td>
+                <td>@vitals.Temperature</td>
+                <td>@vitals.PulseRate</td>
+                <td>@vitals.RespiratorRate</td>
+                <td>@vitals.BloodPressureSystolic / @vitals.BloodPressureDiastolic</td>
+                <td>@vitals.OxygenSaturation</td>
+                <td>@vitals.Notes</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@vitals.ID" class="btn btn-sm btn-info">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

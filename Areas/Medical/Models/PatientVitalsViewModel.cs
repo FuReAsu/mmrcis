@@ -1,28 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace mmrcis.Models
+namespace mmrcis.Areas.Medical.Models
 {
-    public class PatientVitals 
+    public class PatientVitalsViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         
-        [Required]
         [Display(Name = "Patient Visit Records")]
         public int PatientVisitRecordID { get; set; }
-
-        [ForeignKey("PatientVisitRecordID")]
-        public PatientVisitRecord PatientVisitRecord { get; set; } = null!;
         
-        [Required]
         [Display(Name = "Medical Staff")]
         public int MedicalStaffID { get; set; }
-
-        [ForeignKey("MedicalStaffID")]
-        public Person MedicalStaff { get; set; } = null!;
-
+        
         [Column(TypeName = "decimal(5,2)")]
         [Display(Name = "Body Temperature")]
         public decimal Temperature  { get; set; }

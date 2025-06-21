@@ -1,0 +1,48 @@
+@model mmrcis.Models.PatientVitals
+
+@{
+    ViewData["Title"] = "Patient Vitals Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+
+            <dt class="col-sm-3">Patient</dt>
+            <dd class="col-sm-9">@Model.PatientVisitRecord.Patient.Person.FullName</dd>
+
+            <dt class="col-sm-3">Date of Visit</dt>
+            <dd class="col-sm-9">@Model.PatientVisitRecord.DateOfVisit?.ToString("g")</dd>
+
+            <dt class="col-sm-3">Medical Staff</dt>
+            <dd class="col-sm-9">@Model.MedicalStaff.FullName</dd>
+
+            <dt class="col-sm-3">Body Temperature (°C)</dt>
+            <dd class="col-sm-9">@Model.Temperature</dd>
+
+            <dt class="col-sm-3">Pulse Rate (bpm)</dt>
+            <dd class="col-sm-9">@Model.PulseRate</dd>
+
+            <dt class="col-sm-3">Respiratory Rate (breaths/min)</dt>
+            <dd class="col-sm-9">@Model.RespiratorRate</dd>
+
+            <dt class="col-sm-3">Systolic Blood Pressure (mmHg)</dt>
+            <dd class="col-sm-9">@Model.BloodPressureSystolic</dd>
+
+            <dt class="col-sm-3">Diastolic Blood Pressure (mmHg)</dt>
+            <dd class="col-sm-9">@Model.BloodPressureDiastolic</dd>
+
+            <dt class="col-sm-3">Oxygen Saturation (%)</dt>
+            <dd class="col-sm-9">@Model.OxygenSaturation</dd>
+
+            <dt class="col-sm-3">Notes</dt>
+            <dd class="col-sm-9">@(Model.Notes ?? "(none)")</dd>
+
+        </dl>
+
+        <a asp-action="Index" asp-controller="PatientVisitRecord" class="btn btn-sm btn-secondary">Back to List</a>
+        <a asp-action="Edit" asp-area="Medical" asp-route-id="@Model.ID" class="btn btn-sm btn-primary">Edit</a>
+    </div>
+</div>

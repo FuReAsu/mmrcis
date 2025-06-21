@@ -71,7 +71,8 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<CisDbContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
+        var db = scope.ServiceProvider.GetRequiredService<CisDbContext>();
+        db.Database.Migrate();
         
         await DbInitializer.Initialize(context, userManager, roleManager);
     }

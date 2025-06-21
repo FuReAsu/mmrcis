@@ -44,8 +44,15 @@
                 <td>@item.Prescriptions</td>
                 <td>@item.Remarks</td>
                 <td>
-                    <a asp-area="Medical" asp-controller="PatientVitals "asp-action="Create" class="btn btn-sm btn-info">Input Patient Vitals</a>
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit Diagnoses & Prescriptions</a>
+                    @if (item.PatientVitals == null)
+                    {
+                        <a asp-area="Medical" asp-controller="PatientVitals" asp-action="Create" asp-route-patientvisitrecordid="@item.ID" class="btn btn-sm btn-info">Input Patient Vitals</a>
+                    }
+                    else
+                    {
+                        <a asp-area="Medical" asp-controller="PatientVitals" asp-action="Details" asp-route-id="@item.PatientVitals.ID" class="btn btn-sm btn-info">Check Patient Vitals</a>
+                    }
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-secondary">Edit Diagnoses & Prescriptions</a>
                     <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>

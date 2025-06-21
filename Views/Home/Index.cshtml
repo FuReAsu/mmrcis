@@ -7,3 +7,22 @@
     <p>Clinical Information System for MMR Clinic.</p>
     <p>To go to the desired management pages, please click the buttons in the navigation bar</p>
 </div>
+<div style="display: flex; justify-content: center; gap: 20px; margin-top: 50px;">
+    <div style="border: 1px solid #ccc; padding: 20px; width: 200px; text-align: center; border-radius: 10px;">
+        <h4>Admin Portal</h4>
+        <p>Manage users & CostRates & View Logs</p>
+        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-primary">Go</a>
+    </div>
+
+    <div style="border: 1px solid #ccc; padding: 20px; width: 200px; text-align: center; border-radius: 10px;">
+        <h4>Operator Portal</h4>
+        <p>Register patients, schedule visits.</p>
+        <a asp-area="Operator" asp-controller="Home" asp-action="Index" class="btn btn-primary">Go</a>
+    </div>
+
+    <div style="border: 1px solid #ccc; padding: 20px; width: 200px; text-align: center; border-radius: 10px;">
+        <h4>Medical Staff Portal</h4>
+        <p>Review patient records.</p>
+        <a asp-area="Medical" asp-controller="Home" asp-action="Index" class="btn btn-primary">Go</a>
+    </div>
+</div>

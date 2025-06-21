@@ -225,22 +225,35 @@ namespace mmrcis.Areas.Operator.Controllers
 						return View(appointment);
         }
 
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
+            {
+                TempData["ErrorMessage"] = "Appointment not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
             int deletedPatientID = appointment.PatientID;
             int deletedPersonID = appointment.PersonID;
 
-            if(appointment != null)
+            try
             {
                 _context.Appointments.Remove(appointment);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = $"Appointment deleted successfully!";
+
+                TempData["SuccessMessage"] = "Appointment deleted successfully!";
                 string logParameters = $"Operator deleted Appointment for Patient {deletedPatientID} and Doctor {deletedPersonID}";
                 await GenerateAuditLog("Delete", logParameters);
             }
+            catch (DbUpdateException dbEx)
+            {
+                TempData["ErrorMessage"] = "Appointment could not be deleted because related checkinout records exist.";
+                _logger.LogError(dbEx, "Error deleting appointment with ID {id}", id);
+            }
+
             return RedirectToAction(nameof(Index));
         }
   	}

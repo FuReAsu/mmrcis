@@ -72,9 +72,24 @@ namespace mmrcis.Areas.Medical.Controllers
             ViewBag.PatientCheckInOutRecords = new SelectList(patientcheckinoutrecords,"ID", "PatientCheckInOutDetails", model?.PatientCheckInOutID);
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? patientid)
         {
+            if (patientid.HasValue)
+            {
+                var patientvisitrecordswithpatient = await _context.PatientVisitRecords
+                                            .Include(pvr => pvr.PatientVitals)
+                                            .Include(pvr => pvr.Patient)
+                                                .ThenInclude(p => p.Person)
+                                            .Include(pvr => pvr.PatientCheckInOut)
+                                                .ThenInclude(pcio => pcio.Appointment)
+                                            .Include(pvr => pvr.Doctor)
+                                            .Where(pvr => pvr.PatientID == patientid)
+                                            .OrderByDescending(pvr => pvr.PatientCheckInOut.Appointment.AppointmentDateTime)
+                                            .ToListAsync();
+                return View(patientvisitrecordswithpatient);
+            }
             var patientvisitrecords = await _context.PatientVisitRecords
+                                        .Include(pvr => pvr.PatientVitals)
                                         .Include(pvr => pvr.Patient)
                                             .ThenInclude(p => p.Person)
                                         .Include(pvr => pvr.PatientCheckInOut)
@@ -82,7 +97,6 @@ namespace mmrcis.Areas.Medical.Controllers
                                         .Include(pvr => pvr.Doctor)
                                         .OrderByDescending(pvr => pvr.PatientCheckInOut.Appointment.AppointmentDateTime)
                                         .ToListAsync();
-
             return View(patientvisitrecords);
         }
 
