@@ -42,7 +42,21 @@
                     @Html.DisplayFor(modelItem => item.Remarks)
                 </td>
                 <td>
-                    <a asp-area="Operator" asp-controller="Appointment" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Create Patient Visit Records</a>
+                    @if (item.PatientCheckInOut != null)
+                        {  
+                            @if(item.Status == "CheckedIn" && item.PatientCheckInOut.PatientVisitRecord == null)
+                            {
+                                <a asp-area="Medical" asp-controller="PatientVisitRecord" asp-action="Create" asp-route-appointmentid="@item.ID" class="btn btn-sm btn-primary">Create Patient Visit Records</a>
+                            }
+                            @if(item.Status == "CheckedOut" && item.PatientCheckInOut.PatientVisitRecord == null)
+                            {
+                                <a asp-area="Medical" asp-controller="PatientVisitRecord" asp-action="Create" asp-route-appointmentid="@item.ID" class="btn btn-sm btn-primary">Create Patient Visit Records</a>
+                            }
+                            @if (item.PatientCheckInOut.PatientVisitRecord != null)
+                                {
+                                <a asp-area="Medical" asp-controller="PatientVisitRecord" asp-action="Details" asp-route-id="@item.PatientCheckInOut.PatientVisitRecord.ID" class="btn btn-sm btn-primary"> Patient Visit Record Details </a>
+                                }
+                        }
                 </td>
             </tr>
         }

@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace mmrcis.Areas.Operator.Models
+namespace mmrcis.Areas.Medical.Models
 {
 		public class PatientVisitRecordViewModel
 		{
@@ -31,5 +31,8 @@ namespace mmrcis.Areas.Operator.Models
 
         [Display(Name = "Remarks")]
         public string? Remarks { get; set; }
+
+        public IEnumerable<SelectListItem> PatientCheckInOutRecords { get; set; } = new List<SelectListItem>();
+
 		}
 }

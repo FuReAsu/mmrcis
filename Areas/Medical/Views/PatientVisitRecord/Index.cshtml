@@ -1,0 +1,54 @@
+@model IEnumerable<mmrcis.Models.PatientVisitRecord>
+
+@{
+    ViewData["Title"] = "Patient Visit Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Patient)</th>
+            <th>@Html.DisplayNameFor(model => model.Doctor)</th>
+            <th>@Html.DisplayNameFor(model => model.DateOfVisit)</th>
+            <th>@Html.DisplayNameFor(model => model.Diagnoses)</th>
+            <th>@Html.DisplayNameFor(model => model.Prescriptions)</th>
+            <th>@Html.DisplayNameFor(model => model.Remarks)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Patient.Person.FullName</td>
+                <td>@item.Doctor.FullName</td>
+                <td>@(item.DateOfVisit?.ToString("yyyy-MM-dd HH:mm"))</td>
+                <td>@item.Diagnoses</td>
+                <td>@item.Prescriptions</td>
+                <td>@item.Remarks</td>
+                <td>
+                    <a asp-area="Medical" asp-controller="PatientVitals "asp-action="Create" class="btn btn-sm btn-info">Input Patient Vitals</a>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-info">Edit Diagnoses & Prescriptions</a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

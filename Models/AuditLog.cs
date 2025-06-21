@@ -14,6 +14,8 @@ namespace mmrcis.Models
         public Person? Person { get; set; } 
 
         public string? UserName { get; set; }
+
+        public string? UserType { get; set; }
         
         public string? Action { get; set; }
         

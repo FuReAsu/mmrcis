@@ -1,0 +1,44 @@
+@model mmrcis.Models.PatientVisitRecord
+
+@{
+    ViewData["Title"] = "Patient Visit Record Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Patient</dt>
+            <dd class="col-sm-9">@Model.Patient.Person.FullName</dd>
+
+            <dt class="col-sm-3">Doctor</dt>
+            <dd class="col-sm-9">@Model.Doctor.FullName</dd>
+
+            <dt class="col-sm-3">Check-In ID</dt>
+            <dd class="col-sm-9">#@Model.PatientCheckInOut.ID</dd>
+
+            <dt class="col-sm-3">Appointment</dt>
+            <dd class="col-sm-9">@Model.PatientCheckInOut.Appointment.AppointmentDateTime.ToString("g")</dd>
+
+            <dt class="col-sm-3">Date of Visit</dt>
+            <dd class="col-sm-9">@Model.DateOfVisit?.ToString("g")</dd>
+
+            <dt class="col-sm-3">Diagnoses</dt>
+            <dd class="col-sm-9">@Model.Diagnoses</dd>
+
+            <dt class="col-sm-3">Prescriptions</dt>
+            <dd class="col-sm-9">@Model.Prescriptions</dd>
+
+            <dt class="col-sm-3">Remarks</dt>
+            <dd class="col-sm-9">@Model.Remarks</dd>
+        </dl>
+        @if (Model.PatientVitals != null)
+            {
+                <a asp-area="Medical" asp-controller="PatientVitals" asp-action="Details" asp-route-id="Model.PatientVitals.ID" class="btn btn-sm btn-info">Check PatientVitals</a>
+            }
+        <a asp-area="Medical" asp-controller="PatientVitals" asp-action="Create" asp-route-patientvisitrecordid="Model.ID" class="btn btn-sm btn-info">Create PatientVitals Record</a>
+        <a asp-action="Index" class="btn btn-sm btn-secondary">Back to List</a>
+    </div>
+</div>

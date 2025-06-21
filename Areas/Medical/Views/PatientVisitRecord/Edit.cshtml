@@ -1,0 +1,57 @@
+@model mmrcis.Models.PatientVisitRecord
+
+@{
+    ViewData["Title"] = "Edit Diagnoses and Prescriptions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Patient</dt>
+            <dd class="col-sm-9">@Model.Patient.Person.FullName</dd>
+
+            <dt class="col-sm-3">Doctor</dt>
+            <dd class="col-sm-9">@Model.Doctor.FullName</dd>
+
+            <dt class="col-sm-3">Check-In ID</dt>
+            <dd class="col-sm-9">#@Model.PatientCheckInOut.ID</dd>
+
+            <dt class="col-sm-3">Appointment</dt>
+            <dd class="col-sm-9">@Model.PatientCheckInOut.Appointment.AppointmentDateTime.ToString("g")</dd>
+
+            <dt class="col-sm-3">Date of Visit</dt>
+            <dd class="col-sm-9">@Model.DateOfVisit?.ToString("g")</dd>
+        </dl>
+    </div>
+</div>
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="ID" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Diagnoses"></label>
+        <textarea asp-for="Diagnoses" class="form-control"></textarea>
+        <span asp-validation-for="Diagnoses" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Prescriptions"></label>
+        <textarea asp-for="Prescriptions" class="form-control"></textarea>
+        <span asp-validation-for="Prescriptions" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Remarks"></label>
+        <textarea asp-for="Remarks" class="form-control"></textarea>
+        <span asp-validation-for="Remarks" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-sm btn-primary" />
+        <a asp-area="Medical" asp-controller="PatientVisitRecord" asp-action="Index" class="btn btn-sm btn-secondary">Back to List</a>
+    </div>
+</form>

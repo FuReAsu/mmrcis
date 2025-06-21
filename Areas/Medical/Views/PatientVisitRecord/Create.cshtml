@@ -1,0 +1,50 @@
+@model mmrcis.Areas.Medical.Models.PatientVisitRecordViewModel
+
+@{
+    ViewData["Title"] = "Create Patient Visit Record";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p class="text-info">Diagnoses and Prescriptions can be added later (after vitals are inputed)</p>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<input asp-for="ID" type="hidden" />
+    <input asp-for="PatientCheckInOutID" type="hidden" />
+    <input asp-for="DateOfVisit" type="hidden" />
+    <input asp-for="PatientID" type="hidden" />
+    <input asp-for="DoctorID" type="hidden" />
+    <div class="form-group mb-3">
+        <label asp-for="PatientCheckInOutID"></label>
+        <select asp-for="PatientCheckInOutID" class="form-control" asp-items="ViewBag.PatientCheckInOutRecords" disabled></select>
+        <span asp-validation-for="PatientCheckInOutID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Diagnoses"></label>
+        <textarea asp-for="Diagnoses" class="form-control"></textarea>
+        <span asp-validation-for="Diagnoses" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Prescriptions"></label>
+        <textarea asp-for="Prescriptions" class="form-control"></textarea>
+        <span asp-validation-for="Prescriptions" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Remarks"></label>
+        <textarea asp-for="Remarks" class="form-control"></textarea>
+        <span asp-validation-for="Remarks" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-area="Medical" asp-controller="PatientVisitRecord" asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

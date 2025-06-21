@@ -20,6 +20,9 @@
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.UserType)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ControllerName)
             </th>
             <th>
@@ -48,6 +51,9 @@
 							</td>
 							<td>
 									@Html.DisplayFor(modelItem => item.UserName)
+							</td>
+							<td>
+									@Html.DisplayFor(modelItem => item.UserType)
 							</td>
 							<td>
 									@Html.DisplayFor(modelItem => item.ControllerName)

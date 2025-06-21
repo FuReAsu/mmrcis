@@ -37,6 +37,8 @@ namespace mmrcis.Areas.Medical.Controllers
                                             .Where(a => a.PersonID == currentUser.Person.ID)
                                             .Include(a => a.Patient)
                                                 .ThenInclude(p => p.Person)
+                                            .Include(a => a.PatientCheckInOut)
+                                                .ThenInclude(pcio => pcio.PatientVisitRecord)
                                             .OrderByDescending(a => a.AppointmentDateTime)
                                             .ToListAsync();
 
