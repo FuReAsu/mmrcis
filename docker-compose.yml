@@ -1,0 +1,50 @@
+services:
+  mmrcis:
+    image: docker.io/fureasu346/mmrcis:main
+    container_name: mmrcis
+    hostname: mmrcis
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:5000"
+    ports:
+      - "5000:5000"
+    restart: always
+    depends_on: 
+      - mmrcis-mssql
+    networks:
+      - net
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "1G"
+        reservations:
+          cpus: "0.5"
+          memory: "512M"
+  
+  mmrcis-mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mmrcis-mssql
+    hostname: mmrcis-mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "P@ssw0rd"
+    restart: always
+    user: root
+    networks:
+      - net
+    volumes:
+      - data:/var/opt/mssql/data
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2G"
+        reservations:
+          cpus: "1"
+          memory: "1G"
+
+networks:
+  net:
+
+volumes:
+  data:

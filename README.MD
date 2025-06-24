@@ -16,3 +16,8 @@ The **beta** branch contains a prototype version that has up to PatientLabRecord
 - MSSQL OCI image **mcr.microsoft.com/mssql/server:2022-latest**
 - Entity Framework Core 9.0.6 
 - .NET SDK 9.0.6
+
+## Login Information
+
+- Username: admin@test.local
+- Password: P@ssw0rd
